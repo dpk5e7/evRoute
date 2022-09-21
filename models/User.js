@@ -35,6 +35,11 @@ User.init(
         len: [8],
       },
     },
+    is_admin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
     hooks: {
@@ -54,7 +59,7 @@ User.init(
         if (options.fields.includes("email")) {
           updatedUserData.email = await updatedUserData.email.toLowerCase();
         }
-        
+
         return updatedUserData;
       },
     },

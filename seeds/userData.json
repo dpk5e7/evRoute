@@ -2,16 +2,19 @@
   {
     "name": "Dan",
     "email": "dan@evRoute.com",
-    "password": "%TGBnhy6"
+    "password": "%TGBnhy6",
+    "is_admin": "true"
   },
   {
     "name": "Andrew",
     "email": "andrew@evRoute.com",
-    "password": "%TGBnhy6"
+    "password": "%TGBnhy6",
+    "is_admin": "true"
   },
   {
     "name": "Drew",
     "email": "drew@evRoute.com",
-    "password": "%TGBnhy6"
+    "password": "%TGBnhy6",
+    "is_admin": "true"
   }
 ]
