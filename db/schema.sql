@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS evRoute_db;
+CREATE DATABASE evRoute_db;

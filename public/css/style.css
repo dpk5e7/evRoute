@@ -1,0 +1,25 @@
+.card:hover {
+  box-shadow: 4px 4px 3px #888888;
+}
+
+.navbar a {
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+  cursor: hand;
+}
+
+.navbar-nav a {
+  font-size: medium;
+}
+
+footer a {
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+  cursor: hand;
+}
