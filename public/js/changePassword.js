@@ -17,7 +17,7 @@ const formHandler = async (event) => {
     });
 
     if (response.ok) {
-      alert("Password successlly changed.");
+      alert("Password primarylly changed.");
       document.location.replace("/profile");
     } else {
       alert(`Failed to update password.`);

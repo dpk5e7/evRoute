@@ -13,11 +13,18 @@
       integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
       crossorigin="anonymous"
     />
+    <script
+      src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"
+    ></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/css/style.css" />
   </head>
 
-  <body class="bg-secondary bg-opacity-50">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+  <body class="bg-secondary bg-opacity-25">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">evRoute</a>
         <button
@@ -35,9 +42,9 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             {{#if logged_in}}
-              <a class="text-bg-success my-auto" href="/profile">Profile</a>
+              <a class="text-bg-primary my-auto" href="/map">Map</a>
 
-              <li class="nav-item dropdown bg-success">
+              <li class="nav-item dropdown bg-primary">
                 <a
                   class="nav-link dropdown-toggle active"
                   href="#"
@@ -47,21 +54,21 @@
                 >
                   My Account
                 </a>
-                <ul class="dropdown-menu bg-success">
+                <ul class="dropdown-menu bg-primary">
                   <li><a
-                      class="dropdown-item text-bg-success"
+                      class="dropdown-item text-bg-primary"
                       href="/changePassword"
                     >Change Password</a></li>
                   <li><hr class="dropdown-divider" /></li>
                   <li><a
                       id="logout"
-                      class="dropdown-item text-bg-success"
+                      class="dropdown-item text-bg-primary"
                     >Logout</a></li>
                 </ul>
               </li>
 
             {{else}}
-              <a class="btn text-bg-success" href="/login">Login</a>
+              <a class="btn text-bg-primary" href="/login">Login</a>
             {{/if}}
           </div>
         </div>
@@ -73,7 +80,7 @@
         {{{body}}}
       </div>
     </div>
-    <footer class="text-bg-success bg-success p-2">
+    <footer class="text-bg-primary bg-primary p-2">
       &copy; 2022 Team Name
     </footer>
     <script
