@@ -3,7 +3,7 @@ module.exports = {
   content: [
     "./views/**/*.handlebars",
     "./views/layouts/**/*.handlebars",
-    "./views/**/*.html",
+    "./public/**/*.html",
     "./public/js/**/*.js",
   ],
   theme: {
