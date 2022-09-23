@@ -13,6 +13,18 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET Map page
+router.get("/map", async (req, res) => {
+  try {
+    res.render("map", {
+      logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 // GET the change password page
 router.get("/changePassword/", withAuth, async (req, res) => {
   try {
