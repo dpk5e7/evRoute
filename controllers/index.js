@@ -6,3 +6,4 @@ router.use("/", pageRoutes);
 router.use("/api", apiRoutes);
 
 module.exports = router;
+
