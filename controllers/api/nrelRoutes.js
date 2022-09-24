@@ -1,9 +1,10 @@
 const router = require("express").Router();
+const isAuthenticated = require("../../utils/auth");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 // Get Electric Vehicles from NREL
-router.get("/vehicles", async (req, res) => {
+router.get("/vehicles", isAuthenticated, async (req, res) => {
   try {
     var requestOptions = {
       method: "GET",
@@ -32,7 +33,7 @@ router.get("/vehicles", async (req, res) => {
 });
 
 // Get Electric Charging Stations from NREL
-router.get("/stations", async (req, res) => {
+router.get("/stations", isAuthenticated, async (req, res) => {
   try {
     var requestOptions = {
       method: "GET",
@@ -43,10 +44,10 @@ router.get("/stations", async (req, res) => {
       api_key: process.env.NREL_API_KEY,
       latitude: req.query.latitude,
       longitude: req.query.longitude,
-      radius: 50, // miles
+      radius: req.query.radius, // miles
       status: "E",
       fuel_type: "ELEC",
-      limit: 200, // 200 is the max limit
+      limit: req.query.limit, // 200 is the max limit
       access: "public",
     };
 

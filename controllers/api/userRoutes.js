@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { User } = require("../../models");
-const withAuth = require("../../utils/auth");
+const isAuthenticated = require("../../utils/auth");
 
 router.post("/", async (req, res) => {
   try {
@@ -49,7 +49,7 @@ router.post("/login", async (req, res) => {
 });
 
 // Update password
-router.put("/password/", withAuth, async (req, res) => {
+router.put("/password/", isAuthenticated, async (req, res) => {
   try {
     // need to verify that the current password matches.
     const dbUserData = await User.findByPk(req.session.user_id);

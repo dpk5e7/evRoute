@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const withAuth = require("../utils/auth");
+const isAuthenticated = require("../utils/auth");
 
 // GET homepage
 router.get("/", async (req, res) => {
@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 });
 
 // GET Map page
-router.get("/map", async (req, res) => {
+router.get("/map", isAuthenticated, async (req, res) => {
   try {
     res.render("map", {
       logged_in: req.session.logged_in,
@@ -26,7 +26,7 @@ router.get("/map", async (req, res) => {
 });
 
 // GET the change password page
-router.get("/changePassword/", withAuth, async (req, res) => {
+router.get("/changePassword/", isAuthenticated, async (req, res) => {
   try {
     const data = await User.findByPk(req.session.user_id);
 
