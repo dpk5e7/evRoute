@@ -1,3 +1,20 @@
 <div id="map" style="width: 800px; height: 600px;"></div>
+<form id="directionsForm">
+  <div>
+    <div>
+      <label for="txtStartAddress">Start Address</label>
+      <input type="text" id="txtStartAddress" />
+    </div>
+    <div>
+      <label for="txtDestinationAddress">Destination Address</label>
+      <input type="text" id="txtDestinationAddress" />
+    </div>
+    <div>
+      <button type="submit">Submit</button>
+    </div>
+  </div>
+</form>
+<button id="btnClear">Clear Markers</button>
+Double click on map to find the 25 closest chargers within a 25 mile radius.
 <script src="/js/config.js"></script>
 <script src="/js/map.js"></script>
