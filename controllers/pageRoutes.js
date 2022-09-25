@@ -1,11 +1,27 @@
 const router = require("express").Router();
+const { User } = require("../models");
 const isAuthenticated = require("../utils/auth");
+const isNotAuthenticated = require("../utils/notAuth");
 
-// GET homepage
-router.get("/", async (req, res) => {
+// GET login page (root)
+router.get("/", isNotAuthenticated, async (req, res) => {
   try {
-    res.render("homepage", {
+    res.render("login", {
       logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// GET dashboard
+router.get("/dashboard", isAuthenticated, async (req, res) => {
+  try {
+    res.render("dashboard", {
+      logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
     });
   } catch (err) {
     console.log(err);
@@ -18,6 +34,25 @@ router.get("/map", isAuthenticated, async (req, res) => {
   try {
     res.render("map", {
       logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// GET the user's profile page
+router.get("/profile", isAuthenticated, async (req, res) => {
+  try {
+    const data = await User.findByPk(req.session.user_id);
+
+    const user = data.get({ plain: true });
+
+    res.render("profile", {
+      user,
+      logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
     });
   } catch (err) {
     console.log(err);
@@ -26,7 +61,7 @@ router.get("/map", isAuthenticated, async (req, res) => {
 });
 
 // GET the change password page
-router.get("/changePassword/", isAuthenticated, async (req, res) => {
+router.get("/changePassword", isAuthenticated, async (req, res) => {
   try {
     const data = await User.findByPk(req.session.user_id);
 
@@ -35,6 +70,7 @@ router.get("/changePassword/", isAuthenticated, async (req, res) => {
     res.render("changePassword", {
       user,
       logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
     });
   } catch (err) {
     console.log(err);
@@ -42,32 +78,13 @@ router.get("/changePassword/", isAuthenticated, async (req, res) => {
   }
 });
 
-// Login page
-router.get("/login", async (req, res) => {
-  try {
-    if (req.session.logged_in) {
-      res.redirect("/");
-    } else {
-      res.render("login", {
-        logged_in: req.session.logged_in,
-      });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
 // Create Account page
-router.get("/createAccount", async (req, res) => {
+router.get("/createAccount", isNotAuthenticated, async (req, res) => {
   try {
-    if (req.session.logged_in) {
-      res.redirect("/");
-    } else {
-      res.render("createAccount", {
-        logged_in: req.session.logged_in,
-      });
-    }
+    res.render("createAccount", {
+      logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
