@@ -1,1 +1,60 @@
-/admin/ev
+<div class="vstack gap-2">
+  <div class="col-11 p-2 mx-auto">
+    <div class="card border-primary">
+      <div class="card-header bg-primary text-white">
+        Electric Vehicles
+      </div>
+      <div class="table-responsive">
+        <table class="table bg-light table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Model Year</th>
+              <th scope="col">Manufacturer</th>
+              <th scope="col">Model</th>
+              <th scope="col">Category</th>
+              <th scope="col">Drivetrain</th>
+              <th scope="col">Electric Range</th>
+              <th scope="col">Engine Type</th>
+              <th scope="col">Engine Size</th>
+              <th scope="col">Fuel</th>
+              <th scope="col">Fuel Economy Combined</th>
+              <th scope="col">Fuel Economy City</th>
+              <th scope="col">Fuel Economy Highway</th>
+              <th scope="col">Photo URL</th>
+              <th scope="col">Manufacturer URL</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each vehicles as |vehicle|}}
+              <tr>
+                <td scope="row">{{model_year}}</ts>
+                <td>{{manufacturer_name}}</td>
+                <td>{{model}}</td>
+                <td>{{category_name}}</td>
+                <td>{{drivetrain}}</td>
+                <td>{{electric_range}}</td>
+                <td>{{engine_type}}</td>
+                <td>{{engine_size}}</td>
+                <td>{{fuel_name}}</td>
+                <td>{{alternative_fuel_economy_combined}}</td>
+                <td>{{alternative_fuel_economy_city}}</td>
+                <td>{{alternative_fuel_economy_highway}}</td>
+                <td>{{photo_url}}</td>
+                <td>
+                  {{#if manufacturer_url}}
+                  <a href="{{manufacturer_url}}" target="_blank">{{manufacturer_name}}</a>
+                  {{/if}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-11 mb-2 mx-auto">
+    <div class="d-flex justify-content-center mx-auto">
+      <button id="btnImport" class="btn btn-primary">Import New Electric Vehicles from NREL (if any)</button>
+    </div>
+  </div>
+</div>
+<script src="/js/importEV.js"></script>
