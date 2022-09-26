@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { ElectricVehicle } = require("../../models");
 const isAuthenticated = require("../../utils/auth");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
@@ -26,7 +27,68 @@ router.get("/vehicles", isAuthenticated, async (req, res) => {
     const response = await fetch(apiUrl, requestOptions);
     const data = await response.json();
 
-    res.status(200).json(data);
+    let intUpdated = 0;
+    let intInserted = 0;
+
+    // Need to save them to the database here.
+    for (const ev of data.result) {
+      // find by model_year, manufacturer_name, & model
+      const evInDB = await ElectricVehicle.findOne({
+        where: {
+          model_year: ev.model_year,
+          manufacturer_name: ev.manufacturer_name,
+          model: ev.model,
+        },
+      });
+
+      if (evInDB !== null) {
+        // if found, update
+        await evInDB.update({
+          photo_url: ev.photo_url,
+          electric_range: ev.electric_range,
+          engine_type: ev.engine_type,
+          engine_size: ev.engine_size,
+          manufacturer_name: ev.manufacturer_name,
+          manufacturer_url: ev.manufacturer_url,
+          fuel_name: ev.fuel_name,
+          category_name: ev.category_name,
+          drivetrain: ev.drivetrain,
+          alternative_fuel_economy_combined:
+            ev.alternative_fuel_economy_combined,
+          alternative_fuel_economy_city: ev.alternative_fuel_economy_city,
+          alternative_fuel_economy_highway: ev.alternative_fuel_economy_highway,
+        });
+
+        intUpdated++;
+      } else {
+        // else, insert
+        await ElectricVehicle.create({
+          model: ev.model,
+          model_year: ev.model_year,
+          photo_url: ev.photo_url,
+          electric_range: ev.electric_range,
+          engine_type: ev.engine_type,
+          engine_size: ev.engine_size,
+          manufacturer_name: ev.manufacturer_name,
+          manufacturer_url: ev.manufacturer_url,
+          fuel_name: ev.fuel_name,
+          category_name: ev.category_name,
+          drivetrain: ev.drivetrain,
+          alternative_fuel_economy_combined:
+            ev.alternative_fuel_economy_combined,
+          alternative_fuel_economy_city: ev.alternative_fuel_economy_city,
+          alternative_fuel_economy_highway: ev.alternative_fuel_economy_highway,
+        });
+
+        intInserted++;
+      }
+    }
+
+    res
+      .status(200)
+      .json({
+        message: `${intUpdated} vehicles updated.\n${intInserted} vehicles inserted.`,
+      });
   } catch (err) {
     res.status(400).json(err);
   }
