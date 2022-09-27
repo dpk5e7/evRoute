@@ -11,6 +11,10 @@ Trip.init(
       primaryKey: true,
       autoIncrement: true,
     },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     source_address: {
       type: DataTypes.STRING,
       allowNull: false,

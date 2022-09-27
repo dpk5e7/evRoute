@@ -1,10 +1,9 @@
-const loginFormHandler = async (event) => {
+const formHandler = async (event) => {
   event.preventDefault();
 
   const userName = document.querySelector("#txtUserName").value.trim();
-  const email = document.querySelector('#txtEmail').value.trim().toLowerCase();
-  const password = document.querySelector('#txtPassword').value.trim();
-
+  const email = document.querySelector("#txtEmail").value.trim().toLowerCase();
+  const password = document.querySelector("#txtPassword").value.trim();
 
   if (userName && email && password) {
     const response = await fetch("/api/users/", {
@@ -14,7 +13,7 @@ const loginFormHandler = async (event) => {
     });
 
     if (response.ok) {
-      document.location.replace("/");
+      document.location.replace("/profile");
     } else {
       alert("Failed to create user.");
     }
@@ -23,4 +22,4 @@ const loginFormHandler = async (event) => {
 
 document
   .querySelector("#createAccountForm")
-  .addEventListener("submit", loginFormHandler);
+  .addEventListener("submit", formHandler);

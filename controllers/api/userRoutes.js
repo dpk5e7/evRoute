@@ -37,6 +37,9 @@ router.post("/login", async (req, res) => {
       return;
     }
 
+    // Update User.last_login
+    await userData.update({ last_login: Date.now() });
+
     req.session.save(() => {
       req.session.user_id = userData.id;
       req.session.logged_in = true;
