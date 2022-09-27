@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { ElectricVehicle } = require("../../models");
+const { ElectricVehicle, User } = require("../../models");
 const isAdmin = require("../../utils/admin");
 
 // GET homepage
@@ -18,9 +18,13 @@ router.get("/", isAdmin, async (req, res) => {
 // GET admin users page
 router.get("/users", isAdmin, async (req, res) => {
   try {
+    const data = await User.findAll();
+    const users = data.map((user) => user.get({ plain: true }));
+    
     res.render("adminUsers", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      users,
     });
   } catch (err) {
     console.log(err);
