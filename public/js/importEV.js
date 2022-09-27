@@ -4,7 +4,9 @@ btnImport.addEventListener("click", async (event) => {
   event.preventDefault();
 
   try {
-    const response = await fetch("/api/nrel/vehicles");
+    const response = await fetch("/api/nrel/vehicles", {
+      method: "PUT",
+    });
 
     if (response.ok) {
       alert("Vehicles Updated.");
