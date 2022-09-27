@@ -1,11 +1,11 @@
 <div class="vstack gap-2">
-  <div class="col-11 p-2 mx-auto">
+  <div class="col-12 p-2 mx-auto">
     <div class="card border-primary">
-      <div class="card-header bg-primary text-white">
+      <div class="card-header bg-primary text-bg-primary">
         Electric Vehicles
       </div>
       <div class="table-responsive">
-        <table class="table bg-light table-striped table-hover">
+        <table class="table bg-light table-striped">
           <thead>
             <tr>
               <th scope="col">Model Year</th>
@@ -27,7 +27,7 @@
           <tbody>
             {{#each vehicles as |vehicle|}}
               <tr>
-                <td scope="row">{{model_year}}</ts>
+                <td scope="row">{{model_year}}</td>
                 <td>{{manufacturer_name}}</td>
                 <td>{{model}}</td>
                 <td>{{category_name}}</td>
@@ -42,7 +42,10 @@
                 <td>{{photo_url}}</td>
                 <td>
                   {{#if manufacturer_url}}
-                  <a href="{{manufacturer_url}}" target="_blank">{{manufacturer_name}}</a>
+                    <a
+                      href="{{manufacturer_url}}"
+                      target="_blank"
+                    >{{manufacturer_name}}</a>
                   {{/if}}</td>
               </tr>
             {{/each}}
@@ -53,7 +56,8 @@
   </div>
   <div class="col-11 mb-2 mx-auto">
     <div class="d-flex justify-content-center mx-auto">
-      <button id="btnImport" class="btn btn-primary">Import New Electric Vehicles from NREL (if any)</button>
+      <button id="btnImport" class="btn btn-primary text-bg-primary">Import New Electric
+        Vehicles from NREL (if any)</button>
     </div>
   </div>
 </div>

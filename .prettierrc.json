@@ -1,4 +1,5 @@
 {
-    "singleQuote": false
-  }
-  
+  "singleQuote": false,
+  "bracketSpacing": true,
+  "arrowParens": "always"
+}

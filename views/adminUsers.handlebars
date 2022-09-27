@@ -1,1 +1,75 @@
-/admin/users
+<div class="vstack gap-2">
+  <div class="col-12 p-2 mx-auto">
+    <div class="card border-primary">
+      <div class="card-header bg-primary text-bg-primary">
+        Users
+      </div>
+      <div class="table-responsive">
+        <table class="table bg-light table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Last Login</th>
+              <th scope="col">Admin</th>
+              <th scope="col">Locked</th>
+              <th scope="col">Force Password Reset</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each users as |user|}}
+              <tr>
+                <td scope="row">{{id}}</td>
+                <td>{{name}}</td>
+                <td>{{email}}</td>
+                <td>{{format_datetime last_login}}</td>
+                <td>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      {{#if is_admin}}
+                       checked
+                      {{/if}}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      {{#if is_locked}}
+                       checked
+                      {{/if}}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      {{#if force_password_reset}}
+                       checked
+                      {{/if}}
+                    />
+                  </div>
+                </td>
+                <td><a
+                    href="/deleteUser/{{id}}"
+                    class="btn btn-danger text-bg-danger btn-sm"
+                  >Delete</a></td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
