@@ -27,6 +27,35 @@ router.get("/vehicles", isAuthenticated, async (req, res) => {
     const response = await fetch(apiUrl, requestOptions);
     const data = await response.json();
 
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
+// Get Electric Vehicles from NREL & update database
+router.put("/vehicles", isAuthenticated, async (req, res) => {
+  try {
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+
+    var params = {
+      api_key: process.env.NREL_API_KEY,
+      fuel_id: 41,
+    };
+
+    let apiUrl =
+      "https://developer.nrel.gov/api/vehicles/v1/light_duty_automobiles.json?";
+    for (let p in params) {
+      apiUrl += `${p}=${params[p]}&`;
+    }
+    apiUrl = encodeURI(apiUrl.slice(0, -1));
+
+    const response = await fetch(apiUrl, requestOptions);
+    const data = await response.json();
+
     let intUpdated = 0;
     let intInserted = 0;
 
@@ -84,11 +113,9 @@ router.get("/vehicles", isAuthenticated, async (req, res) => {
       }
     }
 
-    res
-      .status(200)
-      .json({
-        message: `${intUpdated} vehicles updated.\n${intInserted} vehicles inserted.`,
-      });
+    res.status(200).json({
+      message: `${intUpdated} vehicles updated.\n${intInserted} vehicles inserted.`,
+    });
   } catch (err) {
     res.status(400).json(err);
   }
