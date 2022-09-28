@@ -1,0 +1,75 @@
+<div class="vstack gap-2">
+  <div class="col-11 p-2 mt-2 mx-auto">
+    <form id="deleteUserForm">
+      <div class="card border-danger">
+        <div class="card-header bg-danger text-bg-danger">
+          Are you sure you want to delete this user???
+        </div>
+        <div class="p-2">
+          <label>ID:</label>
+          <label id="lblUserID">{{user.id}}</label>
+        </div>
+        <div class="p-2">
+          <label>Name:</label>
+          <label>{{user.name}}</label>
+        </div>
+        <div class="p-2">
+          <label>Email:</label>
+          <label>{{user.email}}</label>
+        </div>
+        <div class="p-2">
+          <label>Last Login:</label>
+          <label>{{format_datetime user.last_login}}</label>
+        </div>
+        <div class="p-2">
+          <div class="form-check">
+            <label for="chkAdmin">Admin</label>
+            <input id="chkAdmin"
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              {{#if is_admin}}
+                checked
+              {{/if}}
+              disabled
+            />
+          </div>
+        </div>
+        <div class="p-2">
+          <div class="form-check">
+            <label for="chkLocked">Locked</label>
+            <input id="chkLocked"
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              {{#if is_locked}}
+                checked
+              {{/if}}
+              disabled
+            />
+          </div>
+        </div>
+        <div class="p-2">
+          <div class="form-check">
+            <label for="chkForceReset">Force Password Reset</label>
+            <input id="chkForceReset"
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              {{#if force_password_reset}}
+                checked
+              {{/if}}
+              disabled
+            />
+          </div>
+        </div>
+        <div class="p-2 mx-auto">
+          <button class="btn btn-danger text-bg-danger" type="submit">Delete</button>
+          <a href="/admin/users" class="btn btn-secondary  text-bg-secondary">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/js/deleteUser.js"></script>

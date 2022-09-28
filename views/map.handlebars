@@ -1,23 +1,68 @@
-<div id="map" style="width: 800px; height: 600px;"></div>
+<div class="row">
+  <div id="map" class="col my-2 mx-auto rounded" style="height: 600px;"></div>
+</div>
+
+<div class="row text-center">
+  <div class="col">
+    Double click on map to find the 25 closest chargers within a 25 mile radius.
+  </div>
+</div>
 <form id="directionsForm">
-  <div>
-    <div>
+  <div class="row my-2">
+    <div class="col-2 text-end">
+      <label for="txtTitle">Title</label>
+    </div>
+    <div class="col-10">
+      <input class="form-control" type="text" id="txtTitle" />
+    </div>
+  </div>
+  <div class="row my-2">
+    <div class="col-2 text-end">
       <label for="txtStartAddress">Start Address</label>
-      <input type="text" id="txtStartAddress" />
     </div>
-    <div>
+    <div class="col-10">
+      <input
+        class="form-control"
+        type="text"
+        id="txtStartAddress"
+        value="{{userStartAddress}}"
+      />
+    </div>
+  </div>
+  <div class="row my-2">
+    <div class="col-2 text-end">
       <label for="txtDestinationAddress">Destination Address</label>
-      <input type="text" id="txtDestinationAddress" />
     </div>
-    <div>
-      <button
-        type="submit"
-        class="btn btn-primary text-bg-primary"
-      >Submit</button>
+    <div class="col-10">
+      <input class="form-control" type="text" id="txtDestinationAddress" />
+    </div>
+  </div>
+  <div class="row my-2">
+    <div class="col-2 text-end">
+      <label for="ddlElectricVehicle">Electric Vehicle</label>
+    </div>
+    <div class="col-10">
+      <select id="ddlElectricVehicle" class="form-select">
+        {{#each vehicles as |vehicle|}}
+          <option value="{{id}}">{{model_year}}
+            {{manufacturer_name}}
+            {{model}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </div>
+  <div class="row my-2">
+    <div class="col text-center">
+      <button type="submit" class="btn btn-primary text-bg-primary">Get
+        Directions</button>
+      <button id="btnSave" class="btn btn-success text-bg-success">Save to My
+        Trips</button>
+      <button id="btnClear" class="btn btn-secondary text-bg-secondary">Clear
+        Markers</button>
+      <input id="hdnUserID" type="hidden" value="{{user_id}}" />
     </div>
   </div>
 </form>
-<button id="btnClear" class="btn btn-primary text-bg-primary">Clear Markers</button>
-Double click on map to find the 25 closest chargers within a 25 mile radius.
+
 <script src="/js/config.js"></script>
 <script src="/js/map.js"></script>

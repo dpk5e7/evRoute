@@ -24,13 +24,15 @@
         <div class="d-flex justify-content-end social_icon">
 				</div>
       <div class="container-fluid">
-        <a class="navbar-brand text-bg-primary" href="/">evRoute</a>
+        <a class="navbar-brand text-bg-primary" href="/">
+          <img src="/images/wordLogo.png" alt="evRoute" />
+        </a>
         <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
@@ -38,7 +40,7 @@
         </button>
 
         <!-- Navigation -->
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="collapse navbar-collapse" id="navbarNav">
           <div class="navbar-nav">
             {{#if logged_in}}
               <li class="nav-item">
@@ -84,7 +86,7 @@
         </div>
       </div>
 
-    </header>
+    </nav>
 
     <!-- Main -->
     <main class="container">
@@ -100,10 +102,6 @@
     {{#if logged_in}}
       <script src="/js/logout.js"></script>
     {{/if}}
-    <script src="/js/bootstrap.js"></script>
-    </div>
-    </div>
-    </div>
-</div>
+    <script src="/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
