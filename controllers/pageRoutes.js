@@ -32,9 +32,37 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
 // GET Map page
 router.get("/map", isAuthenticated, async (req, res) => {
   try {
+    // Need to get the user's default start address. This is test data.
+    const userStartAddress = "Morrison, CO";
+
+    // Need to get the user's fleet. This is test data.
+    const vehicles = [
+      {
+        id: 20,
+        model_year: "2022",
+        manufacturer_name: "Ford",
+        model: "F150 Lightning 4WD",
+      },
+      {
+        id: 66,
+        model_year: "2022",
+        manufacturer_name: "Rivian",
+        model: "R1S",
+      },
+      {
+        id: 89,
+        model_year: "2021",
+        manufacturer_name: "BMW",
+        model: "i3",
+      },
+    ];
+
     res.render("map", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      user_id: req.session.user_id,
+      userStartAddress,
+      vehicles,
     });
   } catch (err) {
     console.log(err);

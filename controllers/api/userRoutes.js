@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { User } = require("../../models");
 const isAuthenticated = require("../../utils/auth");
+const isAdmin = require("../../utils/admin");
 
 router.post("/", async (req, res) => {
   try {
@@ -93,6 +94,62 @@ router.post("/logout", (req, res) => {
     });
   } else {
     res.status(404).end();
+  }
+});
+
+// Update an user
+router.put("/:id", isAdmin, async (req, res) => {
+  try {
+    const data = await User.update(
+      {
+        is_admin: req.body.is_admin,
+        is_locked: req.body.is_locked,
+        force_password_reset: req.body.force_password_reset,
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+
+    if (!data) {
+      res.status(404).json({ message: "No user found with this id!" });
+      return;
+    }
+
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// Delete a user
+router.delete("/:id", isAdmin, async (req, res) => {
+  try {
+    if (req.session.user_id == req.params.id) {
+      res
+        .status(404)
+        .json({
+          message: "You're really trying to delete yourself? The answer is No.",
+        });
+      return;
+    }
+
+    const data = await User.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!data) {
+      res.status(404).json({ message: "No user found with this id!" });
+      return;
+    }
+
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 

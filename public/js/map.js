@@ -1,5 +1,20 @@
+const btnClear = document.querySelector("#btnClear");
+const btnSave = document.querySelector("#btnSave");
+const txtTitle = document.querySelector("#txtTitle");
+const txtStartAddress = document.querySelector("#txtStartAddress");
+const txtDestinationAddress = document.querySelector("#txtDestinationAddress");
+const ddlElectricVehicle = document.querySelector("#ddlElectricVehicle");
+const directionsForm = document.querySelector("#directionsForm");
+const hdnUserID = document.querySelector("#hdnUserID");
+hdnUserID;
+
 let map;
 let mapMarkers = [];
+
+// Event Listeners
+directionsForm.addEventListener("submit", formHandler);
+btnClear.addEventListener("click", clearMarkers);
+btnSave.addEventListener("click", saveTrip);
 
 async function getStationData(lon, lat, radius, limit) {
   let data = {};
@@ -38,7 +53,7 @@ async function setMapMarkers(lon, lat, radius, limit) {
   for (const station of stationData) {
     const el = document.createElement("div");
     el.className = "marker";
-    el.style.backgroundImage = `url(/images/red-dot.png)`;
+    el.style.backgroundImage = `url(/images/blue.png)`;
     el.style.width = `32px`;
     el.style.height = `32px`;
     el.style.backgroundSize = "100%";
@@ -67,25 +82,6 @@ function clearMarkers() {
     }
     mapMarkers = [];
   }
-}
-
-function init() {
-  // Eventually we'll want to pull the center of the map from the user's default start location
-  const lat = 39.7392;
-  const lon = -104.9903;
-
-  mapboxgl.accessToken = config.MAPBOX_API_KEY;
-  map = new mapboxgl.Map({
-    container: "map", // container ID
-    style: "mapbox://styles/mapbox/streets-v11", // style URL
-    center: [lon, lat], // starting position [lng, lat]
-    zoom: 11, // starting zoom
-  });
-
-  map.on("dblclick", (e) => {
-    console.log(e.lngLat.lat);
-    setMapMarkers(e.lngLat.lng, e.lngLat.lat, 25, 25);
-  });
 }
 
 async function getLatLong(searchString) {
@@ -146,7 +142,7 @@ async function getDirections(start, destination) {
   }
 }
 
-const formHandler = async (event) => {
+async function formHandler(event) {
   event.preventDefault();
 
   const start = document.querySelector("#txtStartAddress").value.trim();
@@ -271,12 +267,68 @@ const formHandler = async (event) => {
     // Drop charging stations near the end of the route
     setMapMarkers(...destinationCoordinates, 10, 10);
   }
-};
-document
-  .querySelector("#directionsForm")
-  .addEventListener("submit", formHandler);
+}
 
-let btnClear = document.querySelector("#btnClear");
-btnClear.addEventListener("click", clearMarkers);
+async function saveTrip(event) {
+  event.preventDefault();
+
+  const title = txtTitle.value.trim();
+  const source_address = txtStartAddress.value.trim();
+  const destination_address = txtDestinationAddress.value.trim();
+  const electric_vehicle_id = ddlElectricVehicle.value;
+  const user_id = hdnUserID.value.trim();
+
+  console.log(title);
+  console.log(source_address);
+  console.log(destination_address);
+  console.log(electric_vehicle_id);
+  console.log(user_id);
+
+  if (
+    title &&
+    source_address &&
+    destination_address &&
+    electric_vehicle_id &&
+    user_id
+  ) {
+    const response = await fetch("/api/trips/", {
+      method: "POST",
+      body: JSON.stringify({
+        title,
+        source_address,
+        destination_address,
+        user_id,
+        electric_vehicle_id,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (response.ok) {
+      document.location.replace("/profile");
+    } else {
+      alert("Failed to save trip.");
+    }
+  }
+}
+
+function init() {
+  // Eventually we'll want to pull the center of the map from the user's default start location
+  const lat = 39.7392;
+  const lon = -104.9903;
+
+  mapboxgl.accessToken = config.MAPBOX_API_KEY;
+  map = new mapboxgl.Map({
+    container: "map", // container ID
+    //style: "mapbox://styles/mapbox/streets-v11", // style URL
+    style: "mapbox://styles/mapbox/navigation-night-v1",
+    center: [lon, lat], // starting position [lng, lat]
+    zoom: 11, // starting zoom
+  });
+
+  map.on("dblclick", (e) => {
+    console.log(e.lngLat.lat);
+    setMapMarkers(e.lngLat.lng, e.lngLat.lat, 25, 25);
+  });
+}
 
 init();
