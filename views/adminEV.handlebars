@@ -13,15 +13,14 @@
               <th scope="col">Model</th>
               <th scope="col">Category</th>
               <th scope="col">Drivetrain</th>
-              <th scope="col">Electric Range</th>
               <th scope="col">Engine Type</th>
               <th scope="col">Engine Size</th>
-              <th scope="col">Fuel</th>
+              {{! <th scope="col">Fuel</th> }}
+              <th scope="col">Electric Range</th>
               <th scope="col">Fuel Economy Combined</th>
               <th scope="col">Fuel Economy City</th>
               <th scope="col">Fuel Economy Highway</th>
-              <th scope="col">Photo URL</th>
-              <th scope="col">Manufacturer URL</th>
+              <th scope="col">Photo</th>
             </tr>
           </thead>
           <tbody>
@@ -32,21 +31,39 @@
                 <td>{{model}}</td>
                 <td>{{category_name}}</td>
                 <td>{{drivetrain}}</td>
-                <td>{{electric_range}}</td>
                 <td>{{engine_type}}</td>
                 <td>{{engine_size}}</td>
-                <td>{{fuel_name}}</td>
+                {{!-- <td>{{fuel_name}}</td> --}}
+                <td>{{electric_range}}</td>
                 <td>{{alternative_fuel_economy_combined}}</td>
                 <td>{{alternative_fuel_economy_city}}</td>
                 <td>{{alternative_fuel_economy_highway}}</td>
-                <td>{{photo_url}}</td>
                 <td>
                   {{#if manufacturer_url}}
-                    <a
-                      href="{{manufacturer_url}}"
-                      target="_blank"
-                    >{{manufacturer_name}}</a>
-                  {{/if}}</td>
+                    <a href="{{manufacturer_url}}" target="_blank">
+                      {{#if photo_url}}
+                        <img
+                          src="https://afdc.energy.gov{{photo_url}}"
+                          alt="{{model}}"
+                          width="150"
+                          height="80"
+                          class="rounded"
+                        />
+                      {{else}}
+                        {{manufacturer_name}}
+                      {{/if}}</a>
+                  {{else}}
+                    {{#if photo_url}}
+                      <img
+                        src="{{format_nrel_photo photo_url}}"
+                        alt="{{model}}"
+                        width="150"
+                        height="80"
+                        class="rounded"
+                      />
+                    {{/if}}
+                  {{/if}}
+                </td>
               </tr>
             {{/each}}
           </tbody>
@@ -56,8 +73,8 @@
   </div>
   <div class="col-11 mb-2 mx-auto">
     <div class="d-flex justify-content-center mx-auto">
-      <button id="btnImport" class="btn btn-primary text-bg-primary">Import New Electric
-        Vehicles from NREL (if any)</button>
+      <button id="btnImport" class="btn btn-primary text-bg-primary">Import New
+        Electric Vehicles from NREL (if any)</button>
     </div>
   </div>
 </div>

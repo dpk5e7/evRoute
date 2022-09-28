@@ -18,4 +18,9 @@ module.exports = {
   trim_string: (value) => {
     return value.trim();
   },
+  format_nrel_photo: (value) => {
+    return value.startsWith("https://afdc.energy.gov")
+      ? value
+      : "https://afdc.energy.gov" + value;
+  },
 };

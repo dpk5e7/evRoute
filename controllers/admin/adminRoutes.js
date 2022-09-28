@@ -15,12 +15,46 @@ router.get("/", isAdmin, async (req, res) => {
   }
 });
 
+// GET edit user page
+router.get("/editUser/:id", isAdmin, async (req, res) => {
+  try {
+    const data = await User.findByPk(req.params.id);
+    const user = data.get({ plain: true });
+
+    res.render("editUser", {
+      logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
+      user,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+router.get("/deleteUser/:id", isAdmin, async (req, res) => {
+  try {
+    const data = await User.findByPk(req.params.id);
+
+    const user = data.get({ plain: true });
+
+    res.render("deleteUser", {
+      logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
+      user,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 // GET admin users page
 router.get("/users", isAdmin, async (req, res) => {
   try {
     const data = await User.findAll();
     const users = data.map((user) => user.get({ plain: true }));
-    
+
     res.render("adminUsers", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,

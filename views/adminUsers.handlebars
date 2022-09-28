@@ -16,6 +16,7 @@
               <th scope="col">Locked</th>
               <th scope="col">Force Password Reset</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -34,6 +35,7 @@
                       {{#if is_admin}}
                        checked
                       {{/if}}
+                      disabled
                     />
                   </div>
                 </td>
@@ -46,6 +48,7 @@
                       {{#if is_locked}}
                        checked
                       {{/if}}
+                      disabled
                     />
                   </div>
                 </td>
@@ -58,11 +61,16 @@
                       {{#if force_password_reset}}
                        checked
                       {{/if}}
+                      disabled
                     />
                   </div>
                 </td>
                 <td><a
-                    href="/deleteUser/{{id}}"
+                    href="/admin/editUser/{{id}}"
+                    class="btn btn-info text-bg-info btn-sm"
+                  >Edit</a></td>
+                <td><a
+                    href="/admin/deleteUser/{{id}}"
                     class="btn btn-danger text-bg-danger btn-sm"
                   >Delete</a></td>
               </tr>
