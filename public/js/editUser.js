@@ -6,11 +6,6 @@ const formHandler = async (event) => {
   const blnLocked = document.querySelector("#chkLocked").checked;
   const blnForceReset = document.querySelector("#chkForceReset").checked;
 
-  console.log(userID);
-  console.log(blnAdmin);
-  console.log(blnLocked);
-  console.log(blnForceReset);
-
   if (userID) {
     // attempt to update and article
     const response = await fetch(`/api/users/${userID}`, {
