@@ -14,48 +14,96 @@
       href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="/css/style.css" />
 
   </head>
 
-  <body style="background-color: lightgray;">
-    <!-- Header -->
-    <header>
-      <h1>evRoute</h1>
-      <!-- Navigation -->
-      <nav>
-        <ul>
-          {{#if logged_in}}
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/map">Map</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/changePassword">Change Password</a></li>
-            <li><a id="logout" href="#">Logout</a></li>
-          {{else}}
-            <li><a href="/login">Login</a></li>
-          {{/if}}
-        </ul>
-        <ul>
-          {{#if is_admin}}
-            <li><a href="/admin">Admin</a></li>
-            <li><a href="/admin/users">User Management</a></li>
-            <li><a href="/admin/ev">EV Management</a></li>
-          {{/if}}
-        </ul>
-      </nav>
+  <body class="bg">
+
+    <header class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="d-flex justify-content-end social_icon">
+				</div>
+      <div class="container-fluid">
+        <a class="navbar-brand text-bg-primary" href="/">evRoute</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navigation -->
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            {{#if logged_in}}
+              <li class="nav-item">
+                <a
+                  class="nav-link text-bg-primary active"
+                  href="/dashboard"
+                >Dashboard</a>
+              </li>
+              <li class="nav-item"><a
+                  class="nav-link text-bg-primary active"
+                  href="/map"
+                >Map</a></li>
+              <li class="nav-item"><a
+                  class="nav-link text-bg-primary active"
+                  href="/profile"
+                >Profile</a></li>
+              <li class="nav-item"><a
+                  class="nav-link text-bg-primary active"
+                  href="/changePassword"
+                >Change Password</a></li>
+              {{#if is_admin}}
+                <li class="nav-item"><a
+                    class="nav-link text-bg-primary active"
+                    href="/admin/users"
+                  >User Management</a></li>
+                <li class="nav-item"><a
+                    class="nav-link text-bg-primary active"
+                    href="/admin/ev"
+                  >EV Management</a></li>
+              {{/if}}
+              <li class="nav-item"><a
+                  class="nav-link text-bg-primary active"
+                  id="logout"
+                  href="#"
+                >Logout</a></li>
+            {{else}}
+              <li class="nav-item"><a
+                  class="nav-link text-bg-primary active"
+                  href="/login"
+                >Login</a></li>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+
     </header>
 
     <!-- Main -->
-    <main>
-      {{{body}}}
+    <main class="container">
+      <div class="row">
+        {{{body}}}
+      </div>
     </main>
 
     <!-- Footer -->
-    <footer>
-      &copy; 2022 Team Name
+    <footer class="text-bg-primary bg-primary p-2">
+      &copy; 2022 We're Trying
     </footer>
     {{#if logged_in}}
       <script src="/js/logout.js"></script>
     {{/if}}
-
+    <script src="/js/bootstrap.js"></script>
+    </div>
+    </div>
+    </div>
+</div>
   </body>
 </html>

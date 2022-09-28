@@ -1,0 +1,97 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+// Include any default variable overrides here (though functions won't be available)
+
+$primary: #283198;
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+// Then add additional custom code here
+
+.bg {
+  background:linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(93.81% 69.87% at 31.04% 36.46%, #00FF47 64.54%, rgba(197, 234, 119, 0) 100%), 
+  radial-gradient(129.69% 67.41% at 60.21% 84.99%, #00A3FF 34.81%, rgba(217, 217, 217, 0) 88.83%)  green;
+}
+
+//   width: 480px;
+//   height: 853px;
+//   top: -339px;
+//   left: -805px;
+
+// opacity: 0.5;
+// box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  /* Background */
+
+//   position: absolute;
+//   width: 480px;
+//   height: 853px;
+// }
+
+
+
+
+.evlogo {
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: -0.01%;
+  
+    background: #ffffff;
+  }
+
+.hello {
+  /* Hello, */
+
+  position: absolute;
+  width: 204px;
+  height: 85px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 79px;
+  line-height: 96px;
+
+  color: #ffffff;
+}
+
+.prompt {
+  /* please enter you credentials to continue. */
+
+  position: absolute;
+  width: 270px;
+  height: 17px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  /* identical to box height */
+
+  color: #ffffff;
+}
+
+.login {
+  /* LOGIN */
+
+  position: absolute;
+  width: 57px;
+  height: 18px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 18px;
+  letter-spacing: 0.16em;
+
+  color: #01a3ff;
+}
+
+.form-control {
+   margin: 12; 
+}
