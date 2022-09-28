@@ -169,7 +169,7 @@ async function formHandler(event) {
       },
     };
 
-    //console.log(directions);
+    console.log(directions);
 
     // if the route already exists on the map, we'll reset it using setData
     if (map.getSource("route")) {
@@ -207,62 +207,30 @@ async function formHandler(event) {
     // Drop Charging stations near the start of the route
     setMapMarkers(...startCoordinates, 10, 10);
 
-    // // Find all the waypoints
-    // let electricRange = 250; // In miles.  This will need to change to the selected vehicle's range
+    // Find all the waypoints
+    let waypoints = [];
+    for (let step of directions.routes[0].legs[0].steps) {
+      //for (let coord of step.geometry.coordinates) {
+      let objWaypoint = {
+        longitude: step.geometry.coordinates[0][0],
+        latitude: step.geometry.coordinates[0][1],
+        //distance: step.distance / 1609, // convert from meters to miles
+      };
+      waypoints.push(objWaypoint);
+    }
 
-    // //let totalDistanceSoFar = 0;
+    console.log(waypoints);
 
-    // let waypoints = [];
-    // for (let step of directions.routes[0].legs[0].steps) {
-    //   //for (let coord of step.geometry.coordinates) {
-    //   let objWaypoint = {
-    //     longitude: step.geometry.coordinates[0][0],
-    //     latitude: step.geometry.coordinates[0][1],
-    //     //distance: step.distance / 1609, // convert from meters to miles
-    //   };
+    // Use the waypoints to build a LINESTRING for NREL's nearby-route API
+    // LINESTRING(-74.0 40.7, -87.63 41.87, -104.98 39.76)
 
-    //   if (objWaypoint.distance > electricRange) {
-    //     for (
-    //       let i = 0;
-    //       i < step.geometry.coordinates.length;
-    //       i += Math.ceil(step.geometry.coordinates.length / 4)
-    //     ) {
-    //       let objMidpoint = {
-    //         longitude: step.geometry.coordinates[i][0],
-    //         latitude: step.geometry.coordinates[i][1],
-    //         //distance: step.distance / 1609, // convert from meters to miles
-    //       };
-    //       waypoints.push(objMidpoint);
-    //     }
-    //   } else {
-    //     //totalDistanceSoFar += objWaypoint.distance;
-    //     waypoints.push(objWaypoint);
-    //   }
-    // }
-
-    // //console.log(waypoints);
-
-    // const totalDistance = directions.routes[0].distance / 1609; // convert meters to miles
-    // console.log(`Total Distance: ${totalDistance}`);
-
-    // let guessAtNumberOfChargingStops =
-    //   Math.ceil(totalDistance / electricRange) + 1; // Add 1 for good measure
-    // console.log(`Number of Charging Stops: ${guessAtNumberOfChargingStops}`);
-
-    // let waypointsPerCharge = Math.round(
-    //   waypoints.length / guessAtNumberOfChargingStops
-    // );
-    // console.log(`Waypoints Per Charge: ${waypointsPerCharge}`);
-
-    // for (let i = 0; i < waypoints.length; i += 1) {
-    //   console.log(waypoints[i]);
-    //   await setMapMarkers(
-    //     waypoints[i].longitude,
-    //     waypoints[i].latitude,
-    //     50,
-    //     10
-    //   );
-    // }
+    //
+    //
+    //
+    //
+    //
+    //
+    //
 
     // Drop charging stations near the end of the route
     setMapMarkers(...destinationCoordinates, 10, 10);
@@ -277,12 +245,6 @@ async function saveTrip(event) {
   const destination_address = txtDestinationAddress.value.trim();
   const electric_vehicle_id = ddlElectricVehicle.value;
   const user_id = hdnUserID.value.trim();
-
-  console.log(title);
-  console.log(source_address);
-  console.log(destination_address);
-  console.log(electric_vehicle_id);
-  console.log(user_id);
 
   if (
     title &&
