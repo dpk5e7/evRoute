@@ -60,6 +60,11 @@
             {{electric_vehicle.model}}</option>
         {{/each}}
       </select>
+      <input id="hdnSelectedEVID" type="hidden"
+      {{#if trip}}
+        value="{{trip.electric_vehicle_id}}"
+      {{/if}}
+      />
     </div>
   </div>
   <div class="row my-2">
