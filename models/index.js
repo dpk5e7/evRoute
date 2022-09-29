@@ -15,8 +15,8 @@ ElectricVehicle.belongsToMany(User, {
 // Adding this makes it a Super-Many-to-Many
 User.hasMany(Fleet);
 Fleet.belongsTo(User);
-ElectricVehicle.hasMany(Trip);
-Trip.belongsTo(ElectricVehicle);
+ElectricVehicle.hasMany(Fleet);
+Fleet.belongsTo(ElectricVehicle);
 
 // Many-to-Many
 User.belongsToMany(ElectricVehicle, {

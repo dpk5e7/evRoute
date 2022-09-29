@@ -156,4 +156,33 @@ router.get("/stations", isAuthenticated, async (req, res) => {
   }
 });
 
+// Get Electric Charging Stations from NREL
+router.get("/stationsNearRoute", isAuthenticated, async (req, res) => {
+  try {
+    var params = {
+      api_key: process.env.NREL_API_KEY,
+      route: req.query.route,
+      distance: 1.0, // miles
+      status: "E",
+      fuel_type: "ELEC",
+      limit: "all",
+      access: "public",
+    };
+
+    let apiUrl =
+      "https://developer.nrel.gov/api/alt-fuel-stations/v1/nearby-route.json?";
+    for (let p in params) {
+      apiUrl += `${p}=${params[p]}&`;
+    }
+    apiUrl = encodeURI(apiUrl.slice(0, -1));
+
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
 module.exports = router;

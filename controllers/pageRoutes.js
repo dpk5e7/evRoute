@@ -1,5 +1,11 @@
 const router = require("express").Router();
-const { User } = require("../models");
+const {
+  User,
+  Trip,
+  UserProfile,
+  Fleet,
+  ElectricVehicle,
+} = require("../models");
 const isAuthenticated = require("../utils/auth");
 const isNotAuthenticated = require("../utils/notAuth");
 
@@ -32,30 +38,39 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
 // GET Map page
 router.get("/map", isAuthenticated, async (req, res) => {
   try {
-    // Need to get the user's default start address. This is test data.
-    const userStartAddress = "Morrison, CO";
+    let userStartAddress = "Denver, CO"; // default
+    let data = await UserProfile.findOne({
+      where: {
+        user_id: req.session.user_id,
+      },
+      attributes: ["address"],
+    });
+    if (data) {
+      const userProfile = data.get({ plain: true });
+      userStartAddress = userProfile.address;
+    }
 
-    // Need to get the user's fleet. This is test data.
-    const vehicles = [
-      {
-        id: 20,
-        model_year: "2022",
-        manufacturer_name: "Ford",
-        model: "F150 Lightning 4WD",
+    data = await Fleet.findAll({
+      include: [
+        {
+          model: ElectricVehicle,
+          attributes: ["id", "model_year", "manufacturer_name", "model"],
+        },
+      ],
+      where: {
+        user_id: req.session.user_id,
       },
-      {
-        id: 66,
-        model_year: "2022",
-        manufacturer_name: "Rivian",
-        model: "R1S",
-      },
-      {
-        id: 89,
-        model_year: "2021",
-        manufacturer_name: "BMW",
-        model: "i3",
-      },
-    ];
+    });
+
+    let vehicles = [];
+    if (data) {
+      vehicles = data.map((ev) => ev.get({ plain: true }));
+    } else {
+      data = await ElectricVehicle.findAll({
+        attributes: ["id", "model_year", "manufacturer_name", "model"],
+      });
+      vehicles = data.map((ev) => ev.get({ plain: true }));
+    }
 
     res.render("map", {
       logged_in: req.session.logged_in,
@@ -63,6 +78,48 @@ router.get("/map", isAuthenticated, async (req, res) => {
       user_id: req.session.user_id,
       userStartAddress,
       vehicles,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// GET Map page
+router.get("/map/:id", isAuthenticated, async (req, res) => {
+  try {
+    let data = await Trip.findByPk(req.params.id);
+
+    const trip = data.get({ plain: true });
+
+    data = await Fleet.findAll({
+      include: [
+        {
+          model: ElectricVehicle,
+          attributes: ["id", "model_year", "manufacturer_name", "model"],
+        },
+      ],
+      where: {
+        user_id: req.session.user_id,
+      },
+    });
+
+    let vehicles = [];
+    if (data) {
+      vehicles = data.map((ev) => ev.get({ plain: true }));
+    } else {
+      data = await ElectricVehicle.findAll({
+        attributes: ["id", "model_year", "manufacturer_name", "model"],
+      });
+      vehicles = data.map((ev) => ev.get({ plain: true }));
+    }
+
+    res.render("map", {
+      logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
+      user_id: req.session.user_id,
+      vehicles,
+      trip,
     });
   } catch (err) {
     console.log(err);
