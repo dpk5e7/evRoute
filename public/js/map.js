@@ -8,6 +8,7 @@ const ddlElectricVehicle = document.querySelector("#ddlElectricVehicle");
 const directionsForm = document.querySelector("#directionsForm");
 const hdnUserID = document.querySelector("#hdnUserID");
 const hdnTripID = document.querySelector("#hdnTripID");
+const hdnSelectedEVID = document.querySelector("#hdnSelectedEVID");
 
 let map;
 let mapMarkers = [];
@@ -359,7 +360,9 @@ async function init() {
     setStationMarkersNearCoordinates(e.lngLat.lng, e.lngLat.lat, 25, 25);
   });
 
+  // if we're pre-loading a trip, make sure the right vehicle is selected and click the directions button
   if (hdnTripID.value.trim() !== "") {
+    ddlElectricVehicle.value = hdnSelectedEVID.value;
     btnDirections.click();
   }
 }
