@@ -1,4 +1,5 @@
 const btnClear = document.querySelector("#btnClear");
+const btnDirections = document.querySelector("#btnDirections");
 const btnSave = document.querySelector("#btnSave");
 const txtTitle = document.querySelector("#txtTitle");
 const txtStartAddress = document.querySelector("#txtStartAddress");
@@ -6,15 +7,16 @@ const txtDestinationAddress = document.querySelector("#txtDestinationAddress");
 const ddlElectricVehicle = document.querySelector("#ddlElectricVehicle");
 const directionsForm = document.querySelector("#directionsForm");
 const hdnUserID = document.querySelector("#hdnUserID");
-hdnUserID;
+const hdnTripID = document.querySelector("#hdnTripID");
+const hdnSelectedEVID = document.querySelector("#hdnSelectedEVID");
 
 let map;
 let mapMarkers = [];
 
 // Event Listeners
-directionsForm.addEventListener("submit", formHandler);
+btnDirections.addEventListener("click", getDirections);
 btnClear.addEventListener("click", clearMarkers);
-btnSave.addEventListener("click", saveTrip);
+directionsForm.addEventListener("submit", saveTrip);
 
 async function getStationData(lon, lat, radius, limit) {
   let data = {};
@@ -46,45 +48,7 @@ async function getStationData(lon, lat, radius, limit) {
   return data.fuel_stations;
 }
 
-async function setMapMarkers(lon, lat, radius, limit) {
-  const stationData = await getStationData(lon, lat, radius, limit);
-
-  // Add markers to the map.
-  for (const station of stationData) {
-    const el = document.createElement("div");
-    el.className = "marker";
-    el.style.backgroundImage = `url(/images/blue.png)`;
-    el.style.width = `32px`;
-    el.style.height = `32px`;
-    el.style.backgroundSize = "100%";
-
-    // Add markers to the map.
-    const marker = new mapboxgl.Marker(el)
-      .setLngLat([station.longitude, station.latitude])
-      .setPopup(
-        new mapboxgl.Popup({
-          closeButton: false,
-        }).setHTML(
-          `<b>${station.station_name}</b><br>${station.street_address}<br>${station.city}, ${station.state} ${station.zip}<br>EV Connector Types: ${station.ev_connector_types}`
-        )
-      );
-
-    mapMarkers.push(marker);
-    marker.addTo(map);
-  }
-}
-
-function clearMarkers() {
-  // Remove all markers
-  if (mapMarkers !== null) {
-    for (var i = mapMarkers.length - 1; i >= 0; i--) {
-      mapMarkers[i].remove();
-    }
-    mapMarkers = [];
-  }
-}
-
-async function getLatLong(searchString) {
+async function getLonLat(searchString) {
   try {
     let requestOptions = {
       method: "GET",
@@ -114,7 +78,7 @@ async function getLatLong(searchString) {
   }
 }
 
-async function getDirections(start, destination) {
+async function fetchDirections(start, destination) {
   try {
     let requestOptions = {
       method: "GET",
@@ -142,7 +106,7 @@ async function getDirections(start, destination) {
   }
 }
 
-async function formHandler(event) {
+async function getDirections(event) {
   event.preventDefault();
 
   const start = document.querySelector("#txtStartAddress").value.trim();
@@ -151,10 +115,10 @@ async function formHandler(event) {
     .value.trim();
 
   if (start && destination) {
-    const startCoordinates = await getLatLong(start);
-    const destinationCoordinates = await getLatLong(destination);
+    const startCoordinates = await getLonLat(start);
+    const destinationCoordinates = await getLonLat(destination);
 
-    const directions = await getDirections(
+    const directions = await fetchDirections(
       startCoordinates,
       destinationCoordinates
     );
@@ -168,8 +132,6 @@ async function formHandler(event) {
         coordinates: route,
       },
     };
-
-    console.log(directions);
 
     // if the route already exists on the map, we'll reset it using setData
     if (map.getSource("route")) {
@@ -201,39 +163,117 @@ async function formHandler(event) {
       padding: { top: 50, bottom: 50, left: 50, right: 50 },
     });
 
-    // Remove all markers
-    clearMarkers();
-
     // Drop Charging stations near the start of the route
-    setMapMarkers(...startCoordinates, 10, 10);
+    //setStationMarkersNearCoordinates(...startCoordinates, 10, 10);
 
     // Find all the waypoints
     let waypoints = [];
     for (let step of directions.routes[0].legs[0].steps) {
-      //for (let coord of step.geometry.coordinates) {
-      let objWaypoint = {
-        longitude: step.geometry.coordinates[0][0],
-        latitude: step.geometry.coordinates[0][1],
-        //distance: step.distance / 1609, // convert from meters to miles
-      };
-      waypoints.push(objWaypoint);
+      const distance = await getDistanceAsCrowFlies(
+        startCoordinates,
+        step.geometry.coordinates[0]
+      );
+      if (distance > 20) {
+        let objWaypoint = {
+          longitude: step.geometry.coordinates[0][0],
+          latitude: step.geometry.coordinates[0][1],
+        };
+        waypoints.push(objWaypoint);
+      }
     }
 
-    console.log(waypoints);
+    waypoints.reverse(); // start at the destination
 
     // Use the waypoints to build a LINESTRING for NREL's nearby-route API
     // LINESTRING(-74.0 40.7, -87.63 41.87, -104.98 39.76)
+    let lineString = "LINESTRING(";
+    for (wp of waypoints) {
+      lineString += `${wp.longitude} ${wp.latitude}, `;
+    }
+    lineString = lineString.slice(0, -2) + ")";
 
-    //
-    //
-    //
-    //
-    //
-    //
-    //
+    const response = await fetch(
+      `/api/nrel/stationsNearRoute?route=${lineString}`
+    );
+    const data = await response.json();
+
+    // Remove all markers
+    await clearMarkers();
+
+    // Set the markers for the fuel stations
+    await setStationMarkers(data.fuel_stations);
+
+    // Set the markers for the start and destination
+    await setMarker(`<b>${start}</b>`, startCoordinates, "yellow-dot");
+    await setMarker(`<b>${destination}</b>`, destinationCoordinates, "red-dot");
 
     // Drop charging stations near the end of the route
-    setMapMarkers(...destinationCoordinates, 10, 10);
+    //setStationMarkersNearCoordinates(...destinationCoordinates, 10, 10);
+  }
+}
+
+// Modified from https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+async function getDistanceAsCrowFlies(start, end) {
+  var R = 3960; // Radius of the earth in miles
+  var dLat = await deg2rad(end[1] - start[1]); // deg2rad below
+  var dLon = await deg2rad(end[0] - start[0]);
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(await deg2rad(start[1])) *
+      Math.cos(await deg2rad(end[1])) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c; // Distance in miles
+  return d;
+}
+
+async function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
+async function setStationMarkers(stationData) {
+  // Add markers to the map.
+  for (const station of stationData) {
+    setMarker(
+      `<b>${station.station_name}</b><br>${station.street_address}<br>${station.city}, ${station.state} ${station.zip}<br>EV Connector Types: ${station.ev_connector_types}`,
+      [station.longitude, station.latitude],
+      "blue"
+    );
+  }
+}
+
+async function setStationMarkersNearCoordinates(lon, lat, radius, limit) {
+  const stationData = await getStationData(lon, lat, radius, limit);
+  await setStationMarkers(stationData);
+}
+
+async function setMarker(text, coordinates, image) {
+  const el = document.createElement("div");
+  el.className = "marker";
+  el.style.backgroundImage = `url(/images/${image}.png)`;
+  el.style.width = `32px`;
+  el.style.height = `32px`;
+  el.style.backgroundSize = "100%";
+
+  // Add markers to the map.
+  const marker = new mapboxgl.Marker(el).setLngLat(coordinates).setPopup(
+    new mapboxgl.Popup({
+      closeButton: false,
+    }).setHTML(`<b>${text}</b>`)
+  );
+
+  mapMarkers.push(marker);
+  marker.addTo(map);
+}
+
+async function clearMarkers() {
+  // Remove all markers
+  if (mapMarkers !== null) {
+    for (var i = mapMarkers.length - 1; i >= 0; i--) {
+      mapMarkers[i].remove();
+    }
+    mapMarkers = [];
   }
 }
 
@@ -246,51 +286,85 @@ async function saveTrip(event) {
   const electric_vehicle_id = ddlElectricVehicle.value;
   const user_id = hdnUserID.value.trim();
 
-  if (
-    title &&
-    source_address &&
-    destination_address &&
-    electric_vehicle_id &&
-    user_id
-  ) {
-    const response = await fetch("/api/trips/", {
-      method: "POST",
-      body: JSON.stringify({
+  try {
+    if (
+      title &&
+      source_address &&
+      destination_address &&
+      electric_vehicle_id &&
+      user_id
+    ) {
+      const body = {
         title,
         source_address,
         destination_address,
         user_id,
         electric_vehicle_id,
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
+      };
 
-    if (response.ok) {
-      document.location.replace("/profile");
-    } else {
-      alert("Failed to save trip.");
+      let response;
+      let data;
+
+      if (!hdnTripID.value) {
+        // Insert
+        const response = await fetch("/api/trips/", {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          alert("Trip inserted successfully.");
+          document.location.assign(`/map/${data.id}`);
+        } else {
+          alert("Failed to insert trip.");
+        }
+      } else {
+        // Update
+        const response = await fetch(`/api/trips/${hdnTripID.value}`, {
+          method: "PUT",
+          body: JSON.stringify(body),
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          alert("Trip updated successfully.");
+        } else {
+          alert("Failed to update trip.");
+        }
+      }
+
+      // I don't know why, but the function is returning after a successful fetch and not continuing with the lines below.
+      // console.log("Stormy Weather");
+      // console.log(response);
+      // console.log(data);
     }
+  } catch (err) {
+    console.log(err);
   }
 }
 
-function init() {
-  // Eventually we'll want to pull the center of the map from the user's default start location
-  const lat = 39.7392;
-  const lon = -104.9903;
+async function init() {
+  const defaultStartCoordinates = await getLonLat(txtStartAddress.value.trim());
 
   mapboxgl.accessToken = config.MAPBOX_API_KEY;
   map = new mapboxgl.Map({
     container: "map", // container ID
     //style: "mapbox://styles/mapbox/streets-v11", // style URL
     style: "mapbox://styles/mapbox/navigation-night-v1",
-    center: [lon, lat], // starting position [lng, lat]
+    center: defaultStartCoordinates, // starting position [lng, lat]
     zoom: 11, // starting zoom
   });
 
   map.on("dblclick", (e) => {
-    console.log(e.lngLat.lat);
-    setMapMarkers(e.lngLat.lng, e.lngLat.lat, 25, 25);
+    setStationMarkersNearCoordinates(e.lngLat.lng, e.lngLat.lat, 25, 25);
   });
+
+  // if we're pre-loading a trip, make sure the right vehicle is selected and click the directions button
+  if (hdnTripID.value.trim() !== "") {
+    ddlElectricVehicle.value = hdnSelectedEVID.value;
+    btnDirections.click();
+  }
 }
 
 init();
