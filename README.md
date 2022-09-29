@@ -70,7 +70,6 @@ TBD
 1. [MapBox Directions](https://docs.mapbox.com/api/navigation/directions/)
 2. [NREL Alternative Fuel Stations](https://developer.nrel.gov/docs/transportation/alt-fuel-stations-v1/)
 3. [NREL Alternative Fuel Vehicles](https://developer.nrel.gov/docs/transportation/vehicles-v1/)
-4. [NREL Alternative Fuel Stations](https://developer.nrel.gov/docs/transportation/alt-fuel-stations-v1/)
 
 ## Collaborators
 
