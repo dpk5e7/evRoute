@@ -85,5 +85,5 @@ This application is covered under the [MIT License](https://opensource.org/licen
 
 ## Resources
 
-1. GitHub Repo: <https://github.com/dpk5e7/ski-planner>
+1. GitHub Repo: [https://github.com/dpk5e7/evRoute](https://github.com/dpk5e7/evRoute)
 2. Heroku Hosted URL: TBD
