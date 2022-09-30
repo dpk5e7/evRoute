@@ -186,6 +186,19 @@ router.get("/profile", isAuthenticated, async (req, res) => {
   }
 });
 
+// GET addEV
+router.get("/addEV", isAuthenticated, async (req, res) => {
+  try {
+    res.render("addEV", {
+      logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 // GET the change password page
 router.get("/changePassword", isAuthenticated, async (req, res) => {
   try {
