@@ -32,7 +32,10 @@ TBD
 
 ## Future Enhancements
 
-1. TBD
+1. Allow the user to reset a forgotten password.
+2. Automatically lock out a user on a set number of failed login attempts.
+3. Add paging to the administration tables.
+4. Work with NREL to hone their algorithm for sorting stations on their Stations Nearby Route API.
 
 ## Acceptance Criteria
 
