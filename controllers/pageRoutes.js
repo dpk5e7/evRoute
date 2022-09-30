@@ -35,21 +35,8 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
   }
 });
 
-// GET addEV
-router.get("/addEV", isAuthenticated, async (req, res) => {
-  try {
-    res.render("addEV", {
-      logged_in: req.session.logged_in,
-      is_admin: req.session.is_admin,
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
-// GET Map page
-router.get("/map", isAuthenticated, async (req, res) => {
+// GET Trip page
+router.get("/trip", isAuthenticated, async (req, res) => {
   try {
     let userStartAddress = "Denver, CO"; // default
     let data = await UserProfile.findOne({
@@ -85,7 +72,7 @@ router.get("/map", isAuthenticated, async (req, res) => {
       vehicles = data.map((ev) => ev.get({ plain: true }));
     }
 
-    res.render("map", {
+    res.render("trip", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
       user_id: req.session.user_id,
@@ -99,7 +86,7 @@ router.get("/map", isAuthenticated, async (req, res) => {
 });
 
 // GET Map page
-router.get("/map/:id", isAuthenticated, async (req, res) => {
+router.get("/trip/:id", isAuthenticated, async (req, res) => {
   try {
     let data = await Trip.findByPk(req.params.id);
 
@@ -127,7 +114,7 @@ router.get("/map/:id", isAuthenticated, async (req, res) => {
       vehicles = data.map((ev) => ev.get({ plain: true }));
     }
 
-    res.render("map", {
+    res.render("trip", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
       user_id: req.session.user_id,
@@ -143,12 +130,14 @@ router.get("/map/:id", isAuthenticated, async (req, res) => {
 // GET the user's profile page
 router.get("/profile", isAuthenticated, async (req, res) => {
   try {
-    const data = await User.findByPk(req.session.user_id);
+    const data = await UserProfile.findOne({
+      where: { user_id: req.session.user_id },
+    });
 
-    const user = data.get({ plain: true });
+    const userProfile = data.get({ plain: true });
 
     res.render("profile", {
-      user,
+      userProfile,
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
     });
