@@ -44,6 +44,18 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
       where: {
         user_id: req.session.user_id,
       },
+      include: [
+        {
+          model: ElectricVehicle,
+          attributes: [
+            "model_year",
+            "manufacturer_name",
+            "model",
+            "photo_url",
+            "manufacturer_url",
+          ],
+        },
+      ],
     });
     let trips = [];
     if (data) {
