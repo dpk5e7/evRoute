@@ -161,7 +161,10 @@ router.get("/profile", isAuthenticated, async (req, res) => {
       where: { user_id: req.session.user_id },
     });
 
-    const userProfile = data.get({ plain: true });
+    let userProfile;
+    if(data){
+      userProfile = data.get({ plain: true });
+    };
 
     res.render("profile", {
       userProfile,
