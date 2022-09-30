@@ -44,6 +44,18 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
       where: {
         user_id: req.session.user_id,
       },
+      include: [
+        {
+          model: ElectricVehicle,
+          attributes: [
+            "model_year",
+            "manufacturer_name",
+            "model",
+            "photo_url",
+            "manufacturer_url",
+          ],
+        },
+      ],
     });
     let trips = [];
     if (data) {
@@ -168,6 +180,19 @@ router.get("/profile", isAuthenticated, async (req, res) => {
 
     res.render("profile", {
       userProfile,
+      logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// GET addEV
+router.get("/addEV", isAuthenticated, async (req, res) => {
+  try {
+    res.render("addEV", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
     });

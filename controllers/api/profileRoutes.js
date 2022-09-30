@@ -10,7 +10,7 @@ const isAuthenticated = require("../../utils/auth");
 router.get("/:id", isAuthenticated, async (req, res) => {
   try {
     const profileData = await UserProfile.findByPk({
-    include: [{ model: User }]
+      include: [{ model: User }],
     });
     res.status(200).json(profileData);
   } catch (err) {
@@ -30,21 +30,18 @@ router.post("/", isAuthenticated, async (req, res) => {
   }
 });
 
-
 // Update the user's profile
 router.put("/:id", isAuthenticated, async (req, res) => {
   try {
     const profileData = await UserProfile.update(req.body, {
-      where:{
-        id: req.params.id
-      }
+      where: {
+        id: req.params.id,
+      },
     });
     res.status(200).json(profileData);
   } catch (err) {
     res.status(400).json(err);
   }
 });
-
-
 
 module.exports = router;
