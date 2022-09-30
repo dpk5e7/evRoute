@@ -1,38 +1,32 @@
-<div>
-  <div>
-    {{!-- <span>
-      <a>
-        <img src="../public/images/" >
-      </a>
-    </span> --}}
-    <form id="loginForm">
-      <div>
-        <div>
-          Login
-        </div>
-        <div>
-          <label for="txtEmail">Email</label>
-          <input class="form-control" type="text" id="txtEmail" />
-        </div>
-        <div>
-          <label for="txtPassword">Password</label>
-          <input class="form-control" type="password" id="txtPassword" />
-        </div>
-        <div>
-          <button type="submit">Submit</button>
-        </div>
+<div class="vstack gap-2">
+  <form
+    id="loginForm"
+    class="col-11 col-md-5 col-lg-4 col-xl-3 p-2 my-2 mx-auto"
+  >
+    <div class="card border-primary">
+      <div class="card-header bg-primary text-bg-primary">
+        Login
       </div>
-    </form>
+      <div class="p-2">
+        <label for="txtEmail">Email</label>
+        <input class="form-control" type="text" id="txtEmail" />
+      </div>
+      <div class="p-2">
+        <label for="txtPassword">Password</label>
+        <input class="form-control" type="password" id="txtPassword" />
+      </div>
+      <div class="p-2 mx-auto">
+        <button
+          class="btn btn-primary text-bg-primary"
+          type="submit"
+        >Submit</button>
+      </div>
+    </div>
+  </form>
+  <div class="p-2 mx-auto">
+    <a class="btn btn-primary text-bg-primary" href="/createAccount">Create
+      Account</a>
   </div>
 </div>
-<div>
-  <div>
-    <a href="/createAccount">Create Account</a>
-  </div>
-</div>
-
-{{!-- ! START --}}
-
-{{!-- !FIN --}}
 
 <script src="/js/login.js"></script>
