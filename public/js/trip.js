@@ -302,9 +302,6 @@ async function saveTrip(event) {
         electric_vehicle_id,
       };
 
-      let response;
-      let data;
-
       if (!hdnTripID.value) {
         // Insert
         const response = await fetch("/api/trips/", {
@@ -315,7 +312,7 @@ async function saveTrip(event) {
         const data = await response.json();
         if (response.ok) {
           alert("Trip inserted successfully.");
-          document.location.assign(`/map/${data.id}`);
+          document.location.assign(`/trip/${data.id}`);
         } else {
           alert("Failed to insert trip.");
         }
