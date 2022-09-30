@@ -37,7 +37,67 @@ TBD
 ## Acceptance Criteria
 
 ```
-TBD
+As a User
+
+WHEN I visit the site
+THEN I am presented with the login page where I am able to login in, create an account, or reset a forgotten password
+
+WHEN I create an account
+THEN the system prompts me for a username, email, password.
+
+WHEN I type my password incorrectly 3 times within an hour,
+THEN I am locked out of my account.  (Maybe a stretch goal.)
+
+WHEN I log in correctly
+THEN I am sent to my Dashboard page 
+
+WHEN I am logged in
+THEN I see my username and context-sensitive help (instructions) on every page
+AND I see navigation links for the Dashboard, my profile, my trips, my fleet, and the option to log out
+
+WHEN I visit the Profile page
+THEN I am allowed to update my default start address.
+
+WHEN I visit the Dashboard page
+THEN I see my fleet, my saved trips, and links to create a new trip and add vehicles to my fleet
+AND options to delete vehicles from my fleet and my trips.
+
+WHEN I visit the Trip page
+THEN I can input a start address (defaulted to the address in my profile), destination address, and my intended EV
+THEN I am presented with a map of my trip with markers on the map of charging stations along the way (courtesy of the NREL Alternative Fuel Stations API).
+WHEN I click the Save/Submit button
+THEN the trip is saved to my account.
+
+WHEN I double-click on the map
+THEN up to 25 charging stations within a 25-mile radius are displayed on the map
+
+WHEN I attempt to perform any delete action
+THEN I am presented with either a Modal or another Page warning me of the consequences of the action.
+
+WHEN I click on the logout option in the navigation
+THEN I am signed out of the site
+
+WHEN I am idle on the site for more than a set time and then I try to perform another action
+THEN I am prompted to log in again
+
+
+As an Admin
+
+WHEN I am logged in
+THEN I see an Admin menu with links to User Management and EV Management.
+
+WHEN I visit the User Management page
+THEN I see all registered users, able to lock/unlock their account, see their last login date/time, delete their account, and make them an admin, or remove their admin status.
+
+WHEN I visit the EV Management page
+THEN I see all electric vehicles pulled from the NREL Alternative Fuel Vehicle API and can pull an update of the vehicles
+
+
+As a Developer
+
+WHEN I am collaborating with team mates
+THEN I want consistently formatted code with Prettier
+AND I want to ensure correct syntax with ESLint
 ```
 
 ## Website Preview
