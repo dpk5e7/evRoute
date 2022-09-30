@@ -123,9 +123,32 @@ Dashboard
                                     <p>ADD VEHICLE</p>
                                     <form name="form1" id="form1" action="/action_page.php">
                                         <br></br>
+                                        
                                         <select name="year" id="year">
-                                            <option value="" selected="selected">Select Model Year</option>
+                                            {{#each ElectricVehicle.model_year}}
+                                            <option value="{{this.model_year}}" selected="selected">Select car Year</option>
+                                          {{/each}}
                                         </select>
+
+{{!-- todo {{#each ElectricVehicle.model_year}}
+<ul class="vehicle_list_year">
+     {{#each ElectricVehicle.model_year}}
+<li>{{this}}</li>
+{{/each}}
+</ul> --}}
+
+ {{!-- !<div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+        <span class="caret"></span></button>
+
+    <ul class="model_year" id="year">
+        {{#each ElectricVehicle.model_year}}
+        <li>{{this}}</li>
+        {{/each}}
+      </ul>
+      </div> --}}
+
+                                      
                                         <br><br>
                                         <select name="manufactuer" id="manufactuer">
                                             <option value="" selected="selected">Select cars Make</option>
