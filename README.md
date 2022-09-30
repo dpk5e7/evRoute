@@ -26,7 +26,6 @@
 		- CDOT Dept of Innovative Mobility and the Colorado Energy Office’s [NEVI Program](https://www.codot.gov/programs/innovativemobility/electrification/nevi-plan)
 	- However, the private companies that have the most market share for providing Driving Directions have yet to incorporate this feature, but a couple are starting to work on it, i.e MapBox & Tom-Tom.
 - This project aims to help long distance EV travelers gain confidence that they will not be stuck on the side of the road with a depleted battery.
-	- They can't hike to the nearest charging station and return with a couple Watt-hours of electricity (at least not yet anyway).
 
 ### User Story
 
