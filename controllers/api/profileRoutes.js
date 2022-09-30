@@ -10,7 +10,7 @@ const isAuthenticated = require("../../utils/auth");
 router.get("/:id", isAuthenticated, async (req, res) => {
   try {
     const profileData = await UserProfile.findByPk({
-    include: [{ model: User }]
+      include: [{ model: User }],
     });
     res.status(200).json(profileData);
   } catch (err) {
@@ -21,37 +21,35 @@ router.get("/:id", isAuthenticated, async (req, res) => {
 // Create the user's profile
 router.post("/", isAuthenticated, async (req, res) => {
   try {
-  const profileData = await UserProfile.create(req.body);
-  res.status(200).json(profileData);
-  } catch (err) {
-    res.status(400).json(err);
-  }
-});
-
-//post recent addresses
-router.post('/', (req, res) => {
-  if(!req.session.address) {
-    req.session.address.push(req.body)
-  } else {
-    req.session.address = [req.body];
-    res.render('profile', req.session);
-  }
-})
-
-// Update the user's profile
-router.put("/:id", isAuthenticated, async (req, res) => {
-  try {
-    const profileData = await UserProfile.update(req.body, {
-      where:{
-        id: req.params.id
-      }
-    });
+    const profileData = await UserProfile.create(req.body);
     res.status(200).json(profileData);
   } catch (err) {
     res.status(400).json(err);
   }
 });
 
+//post recent addresses
+router.post("/", (req, res) => {
+  if (!req.session.address) {
+    req.session.address.push(req.body);
+  } else {
+    req.session.address = [req.body];
+    res.render("profile", req.session);
+  }
+});
 
+// Update the user's profile
+router.put("/:id", isAuthenticated, async (req, res) => {
+  try {
+    const profileData = await UserProfile.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(200).json(profileData);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
 
 module.exports = router;

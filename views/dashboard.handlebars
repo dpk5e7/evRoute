@@ -55,7 +55,7 @@
                         <a href="{{manufacturer_url}}" target="_blank">
                           {{#if photo_url}}
                             <img
-                              src="https://afdc.energy.gov{{photo_url}}"
+                              src="{{format_nrel_photo photo_url}}"
                               alt="{{model}}"
                               width="150"
                               height="80"
@@ -108,7 +108,7 @@
                 <th scope="col">Title</th>
                 <th scope="col">Start</th>
                 <th scope="col">Destination</th>
-                <th scope="col">EV_ID</th>
+                <th scope="col">Electric Vehicle</th>
               </tr>
             </thead>
             <tbody>
@@ -117,7 +117,13 @@
                   <td><a href="/trip/{{id}}">{{title}}</a></td>
                   <td>{{source_address}}</td>
                   <td>{{destination_address}}</td>
-                  <td>{{electric_vehicle_id}}</td>
+                  <td>
+                    {{#with electric_vehicle}}
+                      {{model_year}}
+                      {{manufacturer_name}}
+                      {{model}}
+                    {{/with}}
+                  </td>
                 </tr>
               {{/each}}
             </tbody>

@@ -51,10 +51,6 @@
               </li>
               <li class="nav-item"><a
                   class="nav-link text-bg-primary active"
-                  href="/Trip"
-                >Trip</a></li>
-              <li class="nav-item"><a
-                  class="nav-link text-bg-primary active"
                   href="/profile"
                 >Profile</a></li>
               <li class="nav-item"><a
@@ -62,14 +58,22 @@
                   href="/changePassword"
                 >Change Password</a></li>
               {{#if is_admin}}
-                <li class="nav-item"><a
-                    class="nav-link text-bg-primary active"
-                    href="/admin/users"
-                  >User Management</a></li>
-                <li class="nav-item"><a
-                    class="nav-link text-bg-primary active"
-                    href="/admin/ev"
-                  >EV Management</a></li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Administration
+                  </a>
+                  <ul class="dropdown-menu bg">
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        href="/admin/users"
+                      >User Management</a></li>
+                      <li><a
+                        class="dropdown-item"
+                        href="/admin/ev"
+                      >EV Management</a></li>
+                  </ul>
+                </li>
               {{/if}}
               <li class="nav-item"><a
                   class="nav-link text-bg-primary active"
