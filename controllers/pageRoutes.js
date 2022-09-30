@@ -25,9 +25,36 @@ router.get("/", isNotAuthenticated, async (req, res) => {
 // GET dashboard
 router.get("/dashboard", isAuthenticated, async (req, res) => {
   try {
+    let data = await Fleet.findAll({
+      include: [
+        {
+          model: ElectricVehicle,
+        },
+      ],
+      where: {
+        user_id: req.session.user_id,
+      },
+    });
+    let vehicles = [];
+    if (data) {
+      vehicles = data.map((ev) => ev.get({ plain: true }));
+    }
+
+    data = await Trip.findAll({
+      where: {
+        user_id: req.session.user_id,
+      },
+    });
+    let trips = [];
+    if (data) {
+      trips = data.map((trip) => trip.get({ plain: true }));
+    }
+
     res.render("dashboard", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      vehicles,
+      trips,
     });
   } catch (err) {
     console.log(err);

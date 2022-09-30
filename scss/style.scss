@@ -3,15 +3,14 @@
 
 // Include any default variable overrides here (though functions won't be available)
 
-$primary: #283198;
+$primary: #0945a0;
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 // Then add additional custom code here
 
 .bg {
-  background:linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(93.81% 69.87% at 31.04% 36.46%, #00FF47 64.54%, rgba(197, 234, 119, 0) 100%), 
-  radial-gradient(129.69% 67.41% at 60.21% 84.99%, #00A3FF 34.81%, rgba(217, 217, 217, 0) 88.83%)  green;
+  background-color: $gray-300;
 }
 
 //   width: 480px;
