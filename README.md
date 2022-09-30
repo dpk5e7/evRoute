@@ -18,12 +18,16 @@
 
 ### Description
 
-TBD
+While electric vehicles are becoming more and more available, the infrastructure required for long distance trips are not as well known. That said, various government agencies are working on this lack of knowlegde issue, e.g. US Dept of Energy, National Renewable Energy Lab, CDOT, etc. However, the private companies that have the most market share for providing Driving Directions have yet to incorporate this feature, but a couple are starting to work on it.
+
+This project aims to help long distance EV travelers gain confidence that they will not be stuck on the side of the road with a depleted battery, because they can't hike to the nearest charging station and return with a couple Watt-hours of electricity (at least not yet anyway).
 
 ### User Story
 
 ```
-TBD
+As an Electric Vehicle Owner,
+I want to know where charging stations are located prior to my trips
+because charging stations are not as prevalent as gas stations (yet).
 ```
 
 ## Features
