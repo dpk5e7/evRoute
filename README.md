@@ -18,9 +18,15 @@
 
 ### Description
 
-While electric vehicles are becoming more and more available, the infrastructure required for long distance trips are not as well known. That said, various government agencies are working on this lack of knowlegde issue, e.g. US Dept of Energy, National Renewable Energy Lab, CDOT, etc. However, the private companies that have the most market share for providing Driving Directions have yet to incorporate this feature, but a couple are starting to work on it.
-
-This project aims to help long distance EV travelers gain confidence that they will not be stuck on the side of the road with a depleted battery, because they can't hike to the nearest charging station and return with a couple Watt-hours of electricity (at least not yet anyway).
+- While electric vehicles are becoming more and more available, the infrastructure required for long distance trips are not mature as the infrastructure for gas vehicles or as well known. 
+- Various government agencies are working on these issue
+		- Examples: 
+			- US Dept of Energy’s [Alternative Fuels Data Center](https://afdc.energy.gov/)
+			- [National Renewable Energy Lab](https://developer.nrel.gov/)
+			- CDOT Dept of Innovative Mobility and the Colorado Energy Office’s [NEVI Program](https://www.codot.gov/programs/innovativemobility/electrification/nevi-plan)
+		- However, the private companies that have the most market share for providing Driving Directions have yet to incorporate this feature, but a couple are starting to work on it, i.e MapBox & Tom-Tom.
+- This project aims to help long distance EV travelers gain confidence that they will not be stuck on the side of the road with a depleted battery.
+	- They can't hike to the nearest charging station and return with a couple Watt-hours of electricity (at least not yet anyway).
 
 ### User Story
 
@@ -32,14 +38,28 @@ because charging stations are not as prevalent as gas stations (yet).
 
 ## Features
 
-1. TBD
+- User
+	- Create Account
+	- Login/Logout
+	- Change Password
+	- Add & Remove EVs to their Fleet
+	- Add & Remove Trips
+	- View EV Charging Stations along their route
+	- Specify a default starting address/location
+- Administration
+	- User Management
+		- Lock/Unlock Users
+		- Delete Users
+	- EV Management
+		- Import new EVs from NREL’s Alternative Fuel Vehicles API
 
 ## Future Enhancements
 
-1. Allow the user to reset a forgotten password.
-2. Automatically lock out a user on a set number of failed login attempts.
-3. Add paging to the administration tables.
-4. Work with NREL to hone their algorithm for sorting stations on their Stations Nearby Route API.
+- Allow the user to reset a forgotten password.
+- Force a user to change their password on their next login.
+- Automatically lock out a user on a set number of failed login attempts.
+- Add paging to the administration tables.
+- Work with NREL to hone their algorithm for returning stations on their Stations Nearby Route API, potentially basing this results on the range of a specific vehicle.
 
 ## Acceptance Criteria
 
@@ -119,24 +139,25 @@ TBD
 
 ## Technologies
 
-1. HTML
-2. CSS
-3. JavaScript
-4. [GitHub](https://www.github.com)
-5. [Node.js](https://nodejs.org/)
-6. [Express.js](https://expressjs.com/)
-7. [MySQL](https://www.mysql.com/)
-8. [Sequelize](https://sequelize.org/)
-9. [Bootstrap v5.2.1](https://www.getbootstrap.com)
-10. [Syntactically Awesome Style Sheets](https://sass-lang.com/)
-11. [Heroku](https://www.heroku.com/)
-12. [MapBox GL JS](https://docs.mapbox.com/mapbox-gl-js/guides/)
+- HTML
+- CSS
+- JavaScript
+- [GitHub](https://www.github.com)
+- [Node.js](https://nodejs.org/)
+- [Express.js](https://expressjs.com/)
+- [MySQL](https://www.mysql.com/)
+- [Sequelize](https://sequelize.org/)
+- [Express Handlebars](https://www.npmjs.com/package/express-handlebars)
+- [Bootstrap v5.2.1](https://www.getbootstrap.com)
+- [Syntactically Awesome Style Sheets](https://sass-lang.com/)
+- [Heroku](https://www.heroku.com/)
+- [MapBox GL JS](https://docs.mapbox.com/mapbox-gl-js/guides/)
 
 ### 3rd Party Application Programming Interfaces
 
-1. [MapBox Directions](https://docs.mapbox.com/api/navigation/directions/)
-2. [NREL Alternative Fuel Stations](https://developer.nrel.gov/docs/transportation/alt-fuel-stations-v1/)
-3. [NREL Alternative Fuel Vehicles](https://developer.nrel.gov/docs/transportation/vehicles-v1/)
+- [MapBox Directions](https://docs.mapbox.com/api/navigation/directions/)
+- [NREL Alternative Fuel Stations](https://developer.nrel.gov/docs/transportation/alt-fuel-stations-v1/)
+- [NREL Alternative Fuel Vehicles](https://developer.nrel.gov/docs/transportation/vehicles-v1/)
 
 ## Collaborators
 
@@ -152,5 +173,5 @@ This application is covered under the [MIT License](https://opensource.org/licen
 
 ## Resources
 
-1. GitHub Repo: [https://github.com/dpk5e7/evRoute](https://github.com/dpk5e7/evRoute)
-2. Heroku Hosted URL: TBD
+- GitHub Repo: [https://github.com/dpk5e7/evRoute](https://github.com/dpk5e7/evRoute)
+- Heroku Hosted URL: TBD
