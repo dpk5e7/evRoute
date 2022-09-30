@@ -20,11 +20,11 @@
 
 - While electric vehicles are becoming more and more available, the infrastructure required for long distance trips are not mature as the infrastructure for gas vehicles or as well known. 
 - Various government agencies are working on these issue
-		- Examples: 
-			- US Dept of Energy’s [Alternative Fuels Data Center](https://afdc.energy.gov/)
-			- [National Renewable Energy Lab](https://developer.nrel.gov/)
-			- CDOT Dept of Innovative Mobility and the Colorado Energy Office’s [NEVI Program](https://www.codot.gov/programs/innovativemobility/electrification/nevi-plan)
-		- However, the private companies that have the most market share for providing Driving Directions have yet to incorporate this feature, but a couple are starting to work on it, i.e MapBox & Tom-Tom.
+	- Examples:
+		- US Dept of Energy’s [Alternative Fuels Data Center](https://afdc.energy.gov/)
+		- [National Renewable Energy Lab](https://developer.nrel.gov/)
+		- CDOT Dept of Innovative Mobility and the Colorado Energy Office’s [NEVI Program](https://www.codot.gov/programs/innovativemobility/electrification/nevi-plan)
+	- However, the private companies that have the most market share for providing Driving Directions have yet to incorporate this feature, but a couple are starting to work on it, i.e MapBox & Tom-Tom.
 - This project aims to help long distance EV travelers gain confidence that they will not be stuck on the side of the road with a depleted battery.
 	- They can't hike to the nearest charging station and return with a couple Watt-hours of electricity (at least not yet anyway).
 
@@ -161,9 +161,9 @@ TBD
 
 ## Collaborators
 
-1. Andrew Lovato: [Github LINK](https://github.com/drewlovato)
-2. Dan Kelly: [Github LINK](https://github.com/dpk5e7)
-3. Drew Lederman: [Github LINK](https://github.com/TREWSKII)
+- Dan Kelly: [Github LINK](https://github.com/dpk5e7)
+- Drew Lederman: [Github LINK](https://github.com/TREWSKII)
+- Andrew Lovato: [Github LINK](https://github.com/drewlovato)
 
 ## License
 
