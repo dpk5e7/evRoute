@@ -64,6 +64,7 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
 
     res.render("dashboard", {
       logged_in: req.session.logged_in,
+      user_name: req.session.user_name,
       is_admin: req.session.is_admin,
       vehicles,
       trips,
@@ -115,6 +116,7 @@ router.get("/trip", isAuthenticated, async (req, res) => {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
       user_id: req.session.user_id,
+      user_name: req.session.user_name,
       userStartAddress,
       vehicles,
     });
@@ -157,6 +159,7 @@ router.get("/trip/:id", isAuthenticated, async (req, res) => {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
       user_id: req.session.user_id,
+      user_name: req.session.user_name,
       vehicles,
       trip,
     });
@@ -174,14 +177,15 @@ router.get("/profile", isAuthenticated, async (req, res) => {
     });
 
     let userProfile;
-    if(data){
+    if (data) {
       userProfile = data.get({ plain: true });
-    };
+    }
 
     res.render("profile", {
       userProfile,
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
     });
   } catch (err) {
     console.log(err);
@@ -195,6 +199,7 @@ router.get("/addEV", isAuthenticated, async (req, res) => {
     res.render("addEV", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
     });
   } catch (err) {
     console.log(err);
@@ -213,6 +218,7 @@ router.get("/changePassword", isAuthenticated, async (req, res) => {
       user,
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
     });
   } catch (err) {
     console.log(err);
