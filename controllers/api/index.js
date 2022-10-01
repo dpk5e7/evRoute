@@ -9,6 +9,6 @@ router.use("/users", userRoutes);
 router.use("/nrel", nrelRoutes);
 router.use("/profile", profileRoutes);
 router.use("/trips", tripRoutes);
-router.use("/fleetRoutes", fleetRoutes);
+router.use("/fleet", fleetRoutes);
 
 module.exports = router;

@@ -1,11 +1,11 @@
 const formHandler = async (event) => {
   event.preventDefault();
 
-  const userID = document.querySelector("#lblUserID").textContent.trim();
+  const tripID = document.querySelector("#lblTripID").textContent.trim();
 
-  if (userID) {
-    // attempt to delete a user
-    const response = await fetch(`/api/users/${userID}`, {
+  if (tripID) {
+    // attempt to delete a trip
+    const response = await fetch(`/api/trips/${tripID}`, {
       method: "DELETE",
     });
 
@@ -18,5 +18,5 @@ const formHandler = async (event) => {
 };
 
 document
-  .querySelector("#deleteUserForm")
+  .querySelector("#deleteTripForm")
   .addEventListener("submit", formHandler);

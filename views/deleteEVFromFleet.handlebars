@@ -1,0 +1,37 @@
+<div class="vstack gap-2">
+  <div class="col-11 p-2 mt-2 mx-auto">
+    <form id="deleteEVFromFleetForm">
+      <div class="card border-danger">
+        <div class="card-header bg-danger text-bg-danger">
+          Are you sure you want to delete this electric vehicle from your
+          fleet???
+        </div>
+        <div class="p-2">
+          <label>Model Year:</label>
+          <label>{{vehicle.model_year}}</label>
+        </div>
+        <div class="p-2">
+          <label>Manufacturer:</label>
+          <label>{{vehicle.manufacturer_name}}</label>
+        </div>
+        <div class="p-2">
+          <label>Model:</label>
+          <label>{{vehicle.model}}</label>
+        </div>
+        <div class="p-2 mx-auto">
+          <button
+            class="btn btn-danger text-bg-danger"
+            type="submit"
+          >Delete</button>
+          <a
+            href="/dashboard"
+            class="btn btn-secondary text-bg-secondary"
+          >Cancel</a>
+          <input id="hdnEVID" type="hidden" value="{{vehicle.id}}" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/js/deleteEVFromFleet.js"></script>
