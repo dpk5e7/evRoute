@@ -8,6 +8,7 @@ router.get("/", isAdmin, async (req, res) => {
     res.render("admin", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
     });
   } catch (err) {
     console.log(err);
@@ -24,6 +25,7 @@ router.get("/editUser/:id", isAdmin, async (req, res) => {
     res.render("editUser", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
       user,
     });
   } catch (err) {
@@ -41,6 +43,7 @@ router.get("/deleteUser/:id", isAdmin, async (req, res) => {
     res.render("deleteUser", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
       user,
     });
   } catch (err) {
@@ -58,6 +61,7 @@ router.get("/users", isAdmin, async (req, res) => {
     res.render("adminUsers", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
       users,
     });
   } catch (err) {
@@ -82,6 +86,7 @@ router.get("/ev", isAdmin, async (req, res) => {
     res.render("adminEV", {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
       vehicles,
     });
   } catch (err) {

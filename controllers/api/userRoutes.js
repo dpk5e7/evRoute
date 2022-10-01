@@ -9,6 +9,7 @@ router.post("/", async (req, res) => {
 
     req.session.save(() => {
       req.session.user_id = userData.id;
+      req.session.user_name = userData.name;
       req.session.logged_in = true;
 
       res.status(200).json(userData);
@@ -43,6 +44,7 @@ router.post("/login", async (req, res) => {
 
     req.session.save(() => {
       req.session.user_id = userData.id;
+      req.session.user_name = userData.name;
       req.session.logged_in = true;
       req.session.is_admin = userData.is_admin;
 
@@ -128,11 +130,9 @@ router.put("/:id", isAdmin, async (req, res) => {
 router.delete("/:id", isAdmin, async (req, res) => {
   try {
     if (req.session.user_id == req.params.id) {
-      res
-        .status(404)
-        .json({
-          message: "You're really trying to delete yourself? The answer is No.",
-        });
+      res.status(404).json({
+        message: "You're really trying to delete yourself? The answer is No.",
+      });
       return;
     }
 

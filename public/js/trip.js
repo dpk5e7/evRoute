@@ -9,6 +9,7 @@ const directionsForm = document.querySelector("#directionsForm");
 const hdnUserID = document.querySelector("#hdnUserID");
 const hdnTripID = document.querySelector("#hdnTripID");
 const hdnSelectedEVID = document.querySelector("#hdnSelectedEVID");
+const instructions = document.querySelector("#instructions");
 
 let map;
 let mapMarkers = [];
@@ -133,6 +134,8 @@ async function getDirections(event) {
       },
     };
 
+    await printTextDirections(directions.routes[0]);
+
     // if the route already exists on the map, we'll reset it using setData
     if (map.getSource("route")) {
       map.getSource("route").setData(geojson);
@@ -210,6 +213,17 @@ async function getDirections(event) {
     // Drop charging stations near the end of the route
     //setStationMarkersNearCoordinates(...destinationCoordinates, 10, 10);
   }
+}
+
+async function printTextDirections(data) {
+  const steps = data.legs[0].steps;
+
+  let tripInstructions = "";
+  for (const step of steps) {
+    tripInstructions += `<li>${step.maneuver.instruction}</li>`;
+  }
+  const duration = new Date(data.duration * 1000).toISOString().slice(11, 19);
+  instructions.innerHTML = `<p><strong>Trip duration: ${duration}</strong></p><ol>${tripInstructions}</ol>`;
 }
 
 // Modified from https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
