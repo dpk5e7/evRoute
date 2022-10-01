@@ -1,16 +1,16 @@
 const formHandler = async (event) => {
   event.preventDefault();
 
-  const userID = document.querySelector("#lblUserID").textContent.trim();
+  const tripID = document.querySelector("#lblTripID").textContent.trim();
 
-  if (userID) {
+  if (tripID) {
     // attempt to delete an article
-    const response = await fetch(`/api/users/${userID}`, {
+    const response = await fetch(`/api/trips/${tripID}`, {
       method: "DELETE",
     });
 
     if (response.ok) {
-      document.location.replace("/dashboard");
+      document.location.replace("/admin/trips");
     } else {
       alert("Failed to delete trip.");
     }
@@ -18,5 +18,5 @@ const formHandler = async (event) => {
 };
 
 document
-  .querySelector("#deleteUserForm")
+  .querySelector("#deleteTripForm")
   .addEventListener("submit", formHandler);

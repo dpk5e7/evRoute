@@ -2,19 +2,22 @@ const router = require("express").Router();
 const { User, Trip } = require("../../models");
 const isAuthenticated = require("../../utils/auth");
 
-// Get all trips for a user
-router.get("/", isAuthenticated, async (req, res) => {
+// Delete a single trip
+router.delete("/:id", isAuthenticated, async (req, res) => {
   try {
-    // Do stuff here
-  } catch (err) {
-    res.status(400).json(err);
-  }
-});
+    const data = await Trip.destroy({
+      where: {
+        id: req.params.id,
+        user_id: req.session.user_id,
+      },
+    });
 
-// Get a single trip
-router.get("/:id", isAuthenticated, async (req, res) => {
-  try {
-    // Do stuff here
+    if (!data) {
+      res.status(404).json({ message: "You don't have a trip with this id!" });
+      return;
+    }
+
+    res.status(200).json(data);
   } catch (err) {
     res.status(400).json(err);
   }

@@ -109,12 +109,14 @@
                 <th scope="col">Start</th>
                 <th scope="col">Destination</th>
                 <th scope="col">Electric Vehicle</th>
+                <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               {{#each trips as |trip|}}
                 <tr>
-                  <td><a href="/trip/{{id}}">{{title}}</a></td>
+                  <td>{{title}}</td>
                   <td>{{source_address}}</td>
                   <td>{{destination_address}}</td>
                   <td>
@@ -124,6 +126,14 @@
                       {{model}}
                     {{/with}}
                   </td>
+                  <td><a
+                      href="/trip/{{id}}"
+                      class="btn btn-info text-bg-info btn-sm"
+                    >View</a></td>
+                  <td><a
+                      href="/deleteTrip/{{id}}"
+                      class="btn btn-danger text-bg-danger btn-sm"
+                    >Delete</a></td>
                 </tr>
               {{/each}}
             </tbody>

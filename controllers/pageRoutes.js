@@ -169,6 +169,30 @@ router.get("/trip/:id", isAuthenticated, async (req, res) => {
   }
 });
 
+router.get("/deleteTrip/:id", isAuthenticated, async (req, res) => {
+  try {
+    const data = await Trip.findByPk(req.params.id, {
+      include: [
+        {
+          model: ElectricVehicle,
+          attributes: ["model_year", "manufacturer_name", "model"],
+        },
+      ],
+    });
+    let trip = data.get({ plain: true });
+
+    res.render("deleteTrip", {
+      logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
+      trip,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 // GET the user's profile page
 router.get("/profile", isAuthenticated, async (req, res) => {
   try {
