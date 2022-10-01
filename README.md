@@ -173,4 +173,4 @@ This application is covered under the [MIT License](https://opensource.org/licen
 ## Resources
 
 - GitHub Repo: [https://github.com/dpk5e7/evRoute](https://github.com/dpk5e7/evRoute)
-- Heroku Hosted URL: TBD
+- Heroku Hosted URL: [https://dpk5e7-evroute.herokuapp.com/](https://dpk5e7-evroute.herokuapp.com/)
