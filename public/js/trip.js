@@ -166,52 +166,38 @@ async function getDirections(event) {
       padding: { top: 50, bottom: 50, left: 50, right: 50 },
     });
 
-    // Drop Charging stations near the start of the route
-    //setStationMarkersNearCoordinates(...startCoordinates, 10, 10);
+    // get the range of the selected electric vehicle
+    const ev_range = await getEVRange();
 
-    // Find all the waypoints
-    let waypoints = [];
-    for (let step of directions.routes[0].legs[0].steps) {
-      const distance = await getDistanceAsCrowFlies(
-        startCoordinates,
-        step.geometry.coordinates[0]
-      );
-      if (distance > 20) {
-        let objWaypoint = {
-          longitude: step.geometry.coordinates[0][0],
-          latitude: step.geometry.coordinates[0][1],
-        };
-        waypoints.push(objWaypoint);
+    // It's recommended that EVs operate with a battery between 80% and 20% full.
+    // Fast chargers won't fill the battery beyond 80% due to the heat created by fast charging.
+    const stopDistance = ev_range * 0.6; // Suggest a battery charge for 50% depletion of the battery.
+    console.log("Stop Distance: " + stopDistance);
+
+    let totalDistance = 0;
+    let stopNear = stopDistance;
+    for (let i = 1; i < route.length; i++) {
+      const distance = await getDistanceAsCrowFlies(route[i], route[i - 1]);
+      totalDistance += distance;
+      //console.log("Total Distance: " + totalDistance);
+
+      if (Math.abs(totalDistance - stopNear) < 25 || distance > stopDistance) {
+        console.log("Stopped at: " + totalDistance);
+        setStationMarkersNearCoordinates(...route[i], 10, 10);
+        stopNear = totalDistance + stopDistance;
+        console.log("Next stop should be near: " + stopNear);
       }
     }
-
-    waypoints.reverse(); // start at the destination
-
-    // Use the waypoints to build a LINESTRING for NREL's nearby-route API
-    // LINESTRING(-74.0 40.7, -87.63 41.87, -104.98 39.76)
-    let lineString = "LINESTRING(";
-    for (wp of waypoints) {
-      lineString += `${wp.longitude} ${wp.latitude}, `;
-    }
-    lineString = lineString.slice(0, -2) + ")";
-
-    const response = await fetch(
-      `/api/nrel/stationsNearRoute?route=${lineString}`
-    );
-    const data = await response.json();
 
     // Remove all markers
     await clearMarkers();
 
-    // Set the markers for the fuel stations
-    await setStationMarkers(data.fuel_stations);
+    // Drop charging stations near the end of the route
+    setStationMarkersNearCoordinates(...destinationCoordinates, 5, 10);
 
     // Set the markers for the start and destination
     await setMarker(`<b>${start}</b>`, startCoordinates, "yellow-dot");
     await setMarker(`<b>${destination}</b>`, destinationCoordinates, "red-dot");
-
-    // Drop charging stations near the end of the route
-    //setStationMarkersNearCoordinates(...destinationCoordinates, 10, 10);
   }
 }
 
@@ -271,11 +257,13 @@ async function setMarker(text, coordinates, image) {
   el.style.backgroundSize = "100%";
 
   // Add markers to the map.
-  const marker = new mapboxgl.Marker(el).setLngLat(coordinates).setPopup(
-    new mapboxgl.Popup({
-      closeButton: false,
-    }).setHTML(`<b>${text}</b>`)
-  );
+  const marker = new mapboxgl.Marker({ anchor: "bottom", element: el })
+    .setLngLat(coordinates)
+    .setPopup(
+      new mapboxgl.Popup({
+        closeButton: false,
+      }).setHTML(`<b>${text}</b>`)
+    );
 
   mapMarkers.push(marker);
   marker.addTo(map);
@@ -288,6 +276,21 @@ async function clearMarkers() {
       mapMarkers[i].remove();
     }
     mapMarkers = [];
+  }
+}
+
+async function getEVRange() {
+  const electric_vehicle_id = ddlElectricVehicle.value;
+  try {
+    const response = await fetch(`/api/ev/${electric_vehicle_id}`);
+    const data = await response.json();
+    let range = 50;
+    if (data) {
+      return data.electric_range;
+    }
+    return range;
+  } catch (err) {
+    return 50;
   }
 }
 
@@ -344,11 +347,6 @@ async function saveTrip(event) {
           alert("Failed to update trip.");
         }
       }
-
-      // I don't know why, but the function is returning after a successful fetch and not continuing with the lines below.
-      // console.log("Stormy Weather");
-      // console.log(response);
-      // console.log(data);
     }
   } catch (err) {
     console.log(err);
