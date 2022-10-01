@@ -22,9 +22,14 @@ router.get("/:id", isAuthenticated, async (req, res) => {
 router.post("/", isAuthenticated, async (req, res) => {
   try {
   // delete where user id = session
-  const profileData = await UserProfile.create({ user_id: req.session.user_id, address: req.body.address });
-
+  const profileData = await UserProfile.destroy({
+    where: {
+      user_id: req.session.user_id
+    }
+  });
+  await UserProfile.create({ user_id: req.session.user_id, address: req.body.address });
   res.status(200).json(profileData);
+
   } catch (err) {
     res.status(400).json(err);
   }
