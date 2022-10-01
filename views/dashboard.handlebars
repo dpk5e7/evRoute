@@ -32,6 +32,7 @@
                 <th scope="col">Fuel Economy City</th>
                 <th scope="col">Fuel Economy Highway</th>
                 <th scope="col">Photo</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -76,6 +77,10 @@
                         {{/if}}
                       {{/if}}
                     </td>
+                    <td><a
+                        href="/deleteEVFromFleet/{{id}}"
+                        class="btn btn-danger text-bg-danger btn-sm"
+                      >Delete</a></td>
                   </tr>
                 {{/with}}
               {{/each}}

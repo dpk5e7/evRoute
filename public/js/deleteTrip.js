@@ -4,13 +4,13 @@ const formHandler = async (event) => {
   const tripID = document.querySelector("#lblTripID").textContent.trim();
 
   if (tripID) {
-    // attempt to delete an article
+    // attempt to delete a trip
     const response = await fetch(`/api/trips/${tripID}`, {
       method: "DELETE",
     });
 
     if (response.ok) {
-      document.location.replace("/admin/trips");
+      document.location.replace("/dashboard");
     } else {
       alert("Failed to delete trip.");
     }

@@ -193,6 +193,28 @@ router.get("/deleteTrip/:id", isAuthenticated, async (req, res) => {
   }
 });
 
+router.get("/deleteEVFromFleet/:id", isAuthenticated, async (req, res) => {
+  try {
+    const data = await ElectricVehicle.findOne({
+      where: {
+        id: req.params.id,
+      },
+      attributes: ["id", "model_year", "manufacturer_name", "model"],
+    });
+    let vehicle = data.get({ plain: true });
+
+    res.render("deleteEVFromFleet", {
+      logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
+      vehicle,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 // GET the user's profile page
 router.get("/profile", isAuthenticated, async (req, res) => {
   try {
