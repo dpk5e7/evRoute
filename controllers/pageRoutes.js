@@ -182,7 +182,7 @@ router.get("/profile", isAuthenticated, async (req, res) => {
     }
 
     res.render("profile", {
-      userProfile,
+      user_profile: userProfile,
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
       user_name: req.session.user_name,
