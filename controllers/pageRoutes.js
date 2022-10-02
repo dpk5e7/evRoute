@@ -188,11 +188,16 @@ router.get("/profile", isAuthenticated, async (req, res) => {
 
 // GET addEV
 router.get("/addEV", isAuthenticated, async (req, res) => {
-  try {
+  try { 
+     const selectObj = await ElectricVehicle.findAll({
+    attributes: ["model_year", "manufacturer_name", "model"]
+   });
     res.render("addEV", {
+      selectObj,
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
     });
+    console.info(selectObj);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

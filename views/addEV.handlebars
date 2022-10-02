@@ -2,19 +2,21 @@
                                     <span class=" pe-2">
                                         <i class="bi bi-plus"></i>
                                     </span>
+                                      {{#each model_year}}
+                                      <p>{{selectObj.model_year}}</p>
+                                      {{/each}}
                                     <p>ADD VEHICLE</p>
                                     <form name="form1" id="form1" action="/action_page.php">
+                                     
                                         <br></br>
-                                        
                                         <select name="year" id="year">
-                                            {{#each ElectricVehicle.model_year}}
-                                            <option value="{{this.model_year}}" selected="selected">Select car Year</option>
-                                          {{/each}}
+                                            <option value="" selected="selected">Select cars year</option>
+                                            
                                         </select>
 
 {{!-- todo {{#each ElectricVehicle.model_year}}
 <ul class="vehicle_list_year">
-     {{#each ElectricVehicle.model_year}}
+     {{#each <p>{{selectObj.model_year}}</p>}}
 <li>{{this}}</li>
 {{/each}}
 </ul> --}}
@@ -185,6 +187,7 @@
                         </table>
                     </div>
                     <div class="card-footer border-0 py-5">
+                    
                         <span class="text-muted text-sm">THIS SHOWS 25/OUT OF 100 CARS</span>
                     </div>
                 </div>
@@ -346,7 +349,7 @@
       </div> --}}
 
                                       
-                                        <br><br>
+                                        {{!-- <br><br>
                                         <select name="manufactuer" id="manufactuer">
                                             <option value="" selected="selected">Select cars Make</option>
                                         </select>
@@ -356,7 +359,7 @@
                                         </select>
                                         <br><br>
                                         <input type="submit" value="ADD TO FLEET">
-                                    </form>
+                                    </form> --}}
                                     {{!-- ! NEED TO ADD FUNCTION TO THIS TO ADD VEHICLE FROM DB AND THEN HAVE DISPLAY IN
                                     TABLE UNDER APPLICATION
                                     1. CLICK THEN DISPLAY LIST OF ALL VEHICLES
@@ -364,7 +367,7 @@
                                     3. ADD TO MY FLEET
                                     4. PULLS DATA AND DIPLAYS IN TABLE FORM UNDER APPLICATIONS --}}
                                     {{!-- JAVASCRIPT CASCASDING DROP DOWN IE. MODEL YEAR, MANUFAC NAME, MODEL, --}}
-                                </a>
+                                {{!-- </a>
                             </div>
                         </div>
                     </div>
