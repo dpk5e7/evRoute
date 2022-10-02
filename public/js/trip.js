@@ -16,7 +16,7 @@ let mapMarkers = [];
 
 // Event Listeners
 btnDirections.addEventListener("click", getDirections);
-btnClear.addEventListener("click", clearMarkers);
+btnClear.addEventListener("click", clickClearMarkers);
 directionsForm.addEventListener("submit", saveTrip);
 
 async function getStationData(lon, lat, radius, limit) {
@@ -235,11 +235,33 @@ async function deg2rad(deg) {
 async function setStationMarkers(stationData) {
   // Add markers to the map.
   for (const station of stationData) {
-    setMarker(
-      `<b>${station.station_name}</b><br>${station.street_address}<br>${station.city}, ${station.state} ${station.zip}<br>EV Connector Types: ${station.ev_connector_types}`,
-      [station.longitude, station.latitude],
-      "blue"
-    );
+    let text = `<b>${station.station_name}</b><br>${station.street_address}<br>${station.city}, ${station.state} ${station.zip}`;
+
+    if (station.ev_level1_evse_num) {
+      text += `<br>Level 1 EVSE ports: ${station.ev_level1_evse_num}`;
+    }
+
+    if (station.ev_level2_evse_num) {
+      text += `<br>Level 2 EVSE ports: ${station.ev_level2_evse_num}`;
+    }
+
+    if (station.ev_dc_fast_num) {
+      text += `<br>DC Fast EVSE ports: ${station.ev_dc_fast_num}`;
+    }
+
+    if (station.ev_other_evse) {
+      text += `<br>Other EVSE ports: ${station.ev_other_evse}`;
+    }
+
+    if (station.ev_connector_types) {
+      text += `<br>EV Connector Types: ${station.ev_connector_types}`;
+    }
+
+    if (station.ev_pricing) {
+      text += `<br>EV Pricing: ${station.ev_pricing}`;
+    }
+
+    setMarker(text, [station.longitude, station.latitude], "blue");
   }
 }
 
@@ -292,6 +314,11 @@ async function getEVRange() {
   } catch (err) {
     return 50;
   }
+}
+
+async function clickClearMarkers(event) {
+  event.preventDefault();
+  await clearMarkers();
 }
 
 async function saveTrip(event) {
