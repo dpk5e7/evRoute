@@ -124,6 +124,8 @@ async function getDirections(event) {
       destinationCoordinates
     );
 
+    //console.log(directions);
+
     const route = directions.routes[0].geometry.coordinates;
     const geojson = {
       type: "Feature",
@@ -166,37 +168,70 @@ async function getDirections(event) {
       padding: { top: 50, bottom: 50, left: 50, right: 50 },
     });
 
+    // Remove all markers
+    await clearMarkers();
+
     // get the range of the selected electric vehicle
     const ev_range = await getEVRange();
 
     // It's recommended that EVs operate with a battery between 80% and 20% full.
     // Fast chargers won't fill the battery beyond 80% due to the heat created by fast charging.
     const stopDistance = ev_range * 0.6; // Suggest a battery charge for 50% depletion of the battery.
-    console.log("Stop Distance: " + stopDistance);
+    //console.log("Stop Distance: " + stopDistance);
 
-    let totalDistance = 0;
-    let stopNear = stopDistance;
-    for (let i = 1; i < route.length; i++) {
-      const distance = await getDistanceAsCrowFlies(route[i], route[i - 1]);
-      totalDistance += distance;
-      console.log("Distance so far: " + totalDistance);
-
-      if (Math.abs(totalDistance - stopNear) < 25 || distance > stopDistance) {
-        console.log("Stopped at: " + totalDistance);
-        setStationMarkersNearCoordinates(...route[i], 10, 10);
-        stopNear = totalDistance + stopDistance;
-        console.log("Next stop should be near: " + stopNear);
+    const waypoints = [];
+    for (let step of directions.routes[0].legs[0].steps) {
+      for (let coord of step.geometry.coordinates) {
+        waypoints.push(coord);
       }
     }
 
-    // Remove all markers
-    await clearMarkers();
+    const stops = [];
+    let totalDistance = 0;
+    for (let i = 1; i < waypoints.length; i++) {
+      const distance = await getDistanceAsCrowFlies(
+        waypoints[i],
+        waypoints[i - 1]
+      );
+      totalDistance += distance;
+      if (totalDistance > stopDistance) {
+        stops.push(i - 1);
+        totalDistance = distance;
+      }
+    }
+    //console.log(`Stops: ${stops}`);
+
+    // Set the marker for the start
+    await setMarker(`<b>${start}</b>`, startCoordinates, "yellow-dot");
+
+    for (let i = 0; i < stops.length; i++) {
+      // let travelDistance;
+      // if (i === 0) {
+      //   travelDistance = await getDistanceAsCrowFlies(
+      //     waypoints[stops[i]],
+      //     startCoordinates
+      //   );
+      // } else {
+      //   travelDistance = await getDistanceAsCrowFlies(
+      //     waypoints[stops[i]],
+      //     waypoints[stops[i - 1]]
+      //   );
+      // }
+      // console.log(
+      //   `Travelled: ${travelDistance}\nStopped at: ${waypoints[stops[i]]}`
+      // );
+      await setStationMarkersNearCoordinates(...waypoints[stops[i]], 25, 10);
+      await setMarker(
+        `<b>Stop #${i + 1}</b>`,
+        waypoints[stops[i]],
+        "green-dot"
+      );
+    }
 
     // Drop charging stations near the end of the route
-    setStationMarkersNearCoordinates(...destinationCoordinates, 5, 10);
+    await setStationMarkersNearCoordinates(...destinationCoordinates, 5, 10);
 
-    // Set the markers for the start and destination
-    await setMarker(`<b>${start}</b>`, startCoordinates, "yellow-dot");
+    // Set the markers for the destination
     await setMarker(`<b>${destination}</b>`, destinationCoordinates, "red-dot");
   }
 }
