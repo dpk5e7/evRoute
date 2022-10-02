@@ -179,7 +179,7 @@ async function getDirections(event) {
     for (let i = 1; i < route.length; i++) {
       const distance = await getDistanceAsCrowFlies(route[i], route[i - 1]);
       totalDistance += distance;
-      //console.log("Total Distance: " + totalDistance);
+      console.log("Distance so far: " + totalDistance);
 
       if (Math.abs(totalDistance - stopNear) < 25 || distance > stopDistance) {
         console.log("Stopped at: " + totalDistance);
