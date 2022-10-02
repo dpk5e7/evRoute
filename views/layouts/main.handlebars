@@ -57,19 +57,20 @@
                 >Change Password</a></li>
               {{#if is_admin}}
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a
+                    class="nav-link dropdown-toggle active"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
                     Administration
                   </a>
                   <ul class="dropdown-menu bg">
                     <li>
-                      <a
-                        class="dropdown-item"
-                        href="/admin/users"
-                      >User Management</a></li>
-                      <li><a
-                        class="dropdown-item"
-                        href="/admin/ev"
-                      >EV Management</a></li>
+                      <a class="dropdown-item" href="/admin/users">User
+                        Management</a></li>
+                    <li><a class="dropdown-item" href="/admin/ev">EV Management</a></li>
                   </ul>
                 </li>
               {{/if}}
@@ -105,6 +106,5 @@
       <script src="/js/logout.js"></script>
     {{/if}}
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script src="/models/ElectricVehicle.js"
   </body>
 </html>
