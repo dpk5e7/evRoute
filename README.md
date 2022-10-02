@@ -70,15 +70,11 @@ THEN I am presented with the login page where I am able to login in, create an a
 WHEN I create an account
 THEN the system prompts me for a username, email, password.
 
-WHEN I type my password incorrectly 3 times within an hour,
-THEN I am locked out of my account.  (Maybe a stretch goal.)
-
 WHEN I log in correctly
 THEN I am sent to my Dashboard page 
 
 WHEN I am logged in
-THEN I see my username and context-sensitive help (instructions) on every page
-AND I see navigation links for the Dashboard, my profile, my trips, my fleet, and the option to log out
+THEN I see navigation links for the Dashboard, my profile, my trips, my fleet, and the option to log out
 
 WHEN I visit the Profile page
 THEN I am allowed to update my default start address.
