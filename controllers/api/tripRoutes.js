@@ -30,6 +30,7 @@ router.post("/", isAuthenticated, async (req, res) => {
       title: req.body.title,
       source_address: req.body.source_address,
       destination_address: req.body.destination_address,
+      is_aggressive: req.body.is_aggressive,
       user_id: req.body.user_id,
       electric_vehicle_id: req.body.electric_vehicle_id,
     });
@@ -53,6 +54,7 @@ router.put("/:id", isAuthenticated, async (req, res) => {
         title: req.body.title,
         source_address: req.body.source_address,
         destination_address: req.body.destination_address,
+        is_aggressive: req.body.is_aggressive,
         user_id: req.body.user_id,
         electric_vehicle_id: req.body.electric_vehicle_id,
       },

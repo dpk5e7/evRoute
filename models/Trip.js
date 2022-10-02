@@ -23,6 +23,11 @@ Trip.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    is_aggressive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     user_id: {
       type: DataTypes.INTEGER,
       references: {
