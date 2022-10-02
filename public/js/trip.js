@@ -5,10 +5,12 @@ const txtTitle = document.querySelector("#txtTitle");
 const txtStartAddress = document.querySelector("#txtStartAddress");
 const txtDestinationAddress = document.querySelector("#txtDestinationAddress");
 const ddlElectricVehicle = document.querySelector("#ddlElectricVehicle");
+const chkAggressive = document.querySelector("#chkAggressive");
 const directionsForm = document.querySelector("#directionsForm");
 const hdnUserID = document.querySelector("#hdnUserID");
 const hdnTripID = document.querySelector("#hdnTripID");
 const hdnSelectedEVID = document.querySelector("#hdnSelectedEVID");
+const hdnAggressive = document.querySelector("#hdnAggressive");
 const instructions = document.querySelector("#instructions");
 
 let map;
@@ -176,14 +178,20 @@ async function getDirections(event) {
 
     // It's recommended that EVs operate with a battery between 80% and 20% full.
     // Fast chargers won't fill the battery beyond 80% due to the heat created by fast charging.
-    const stopDistance = ev_range * 0.6; // Suggest a battery charge for 50% depletion of the battery.
+    const stopDistance = ev_range * 0.6; // Suggest a battery charge for 60% depletion of the battery.
     //console.log("Stop Distance: " + stopDistance);
 
-    const waypoints = [];
-    for (let step of directions.routes[0].legs[0].steps) {
-      for (let coord of step.geometry.coordinates) {
-        waypoints.push(coord);
+    let waypoints = [];
+    const blnAggressive = chkAggressive.checked;
+
+    if (blnAggressive) {
+      for (let step of directions.routes[0].legs[0].steps) {
+        for (let coord of step.geometry.coordinates) {
+          waypoints.push(coord);
+        }
       }
+    } else {
+      waypoints = route;
     }
 
     const stops = [];
@@ -202,7 +210,7 @@ async function getDirections(event) {
     //console.log(`Stops: ${stops}`);
 
     // Set the marker for the start
-    await setMarker(`<b>${start}</b>`, startCoordinates, "yellow-dot");
+    await setMarker(`<b>${start}</b>`, startCoordinates, "green-dot");
 
     for (let i = 0; i < stops.length; i++) {
       // let travelDistance;
@@ -224,7 +232,7 @@ async function getDirections(event) {
       await setMarker(
         `<b>Stop #${i + 1}</b>`,
         waypoints[stops[i]],
-        "green-dot"
+        "yellow-dot"
       );
     }
 
@@ -363,6 +371,7 @@ async function saveTrip(event) {
   const source_address = txtStartAddress.value.trim();
   const destination_address = txtDestinationAddress.value.trim();
   const electric_vehicle_id = ddlElectricVehicle.value;
+  const is_aggressive = chkAggressive.checked;
   const user_id = hdnUserID.value.trim();
 
   try {
@@ -377,6 +386,7 @@ async function saveTrip(event) {
         title,
         source_address,
         destination_address,
+        is_aggressive,
         user_id,
         electric_vehicle_id,
       };
@@ -390,7 +400,7 @@ async function saveTrip(event) {
         });
         const data = await response.json();
         if (response.ok) {
-          alert("Trip inserted successfully.");
+          alert("Trip saved successfully.");
           document.location.assign(`/trip/${data.id}`);
         } else {
           alert("Failed to insert trip.");
@@ -434,6 +444,7 @@ async function init() {
   // if we're pre-loading a trip, make sure the right vehicle is selected and click the directions button
   if (hdnTripID.value.trim() !== "") {
     ddlElectricVehicle.value = hdnSelectedEVID.value;
+    chkAggressive.checked = hdnAggressive.value;
     btnDirections.click();
   }
 }
