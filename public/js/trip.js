@@ -444,7 +444,7 @@ async function init() {
   // if we're pre-loading a trip, make sure the right vehicle is selected and click the directions button
   if (hdnTripID.value.trim() !== "") {
     ddlElectricVehicle.value = hdnSelectedEVID.value;
-    chkAggressive.checked = hdnAggressive.value;
+    chkAggressive.checked = hdnAggressive.value === "true" ? 1 : 0;
     btnDirections.click();
   }
 }
