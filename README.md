@@ -58,7 +58,6 @@ because charging stations are not as prevalent as gas stations (yet).
 - Force a user to change their password on their next login.
 - Automatically lock out a user on a set number of failed login attempts.
 - Add paging to the administration tables.
-- Work with NREL to hone their algorithm for returning stations on their Stations Nearby Route API, potentially basing this results on the range of a specific vehicle.
 
 ## Acceptance Criteria
 
