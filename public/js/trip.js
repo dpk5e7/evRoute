@@ -210,7 +210,7 @@ async function getDirections(event) {
     //console.log(`Stops: ${stops}`);
 
     // Set the marker for the start
-    await setMarker(`<b>${start}</b>`, startCoordinates, "green-dot");
+    await setMarker(`<b>${start}</b>`, startCoordinates, "home");
 
     for (let i = 0; i < stops.length; i++) {
       // let travelDistance;
@@ -232,7 +232,7 @@ async function getDirections(event) {
       await setMarker(
         `<b>Stop #${i + 1}</b>`,
         waypoints[stops[i]],
-        "yellow-dot"
+        "mid-point"
       );
     }
 
@@ -240,7 +240,11 @@ async function getDirections(event) {
     await setStationMarkersNearCoordinates(...destinationCoordinates, 5, 10);
 
     // Set the markers for the destination
-    await setMarker(`<b>${destination}</b>`, destinationCoordinates, "red-dot");
+    await setMarker(
+      `<b>${destination}</b>`,
+      destinationCoordinates,
+      "end-point"
+    );
   }
 }
 
