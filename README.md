@@ -142,6 +142,7 @@ TBD
 - [MySQL](https://www.mysql.com/)
 - [Sequelize](https://sequelize.org/)
 - [Express Handlebars](https://www.npmjs.com/package/express-handlebars)
+- [Node-fetch](https://www.npmjs.com/package/node-fetch)
 - [Bootstrap v5.2.1](https://www.getbootstrap.com)
 - [Syntactically Awesome Style Sheets](https://sass-lang.com/)
 - [Heroku](https://www.heroku.com/)
