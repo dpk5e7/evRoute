@@ -218,17 +218,15 @@ router.get("/deleteEVFromFleet/:id", isAuthenticated, async (req, res) => {
 // GET the user's profile page
 router.get("/profile", isAuthenticated, async (req, res) => {
   try {
-    const data = await UserProfile.findOne({
-      where: { user_id: req.session.user_id },
+    const data = await User.findByPk( req.session.user_id, {
+      include: [{ model: UserProfile }]
     });
 
-    let userProfile;
-    if (data) {
-      userProfile = data.get({ plain: true });
-    }
+      const user = data.get({ plain: true });
+    
 
     res.render("profile", {
-      user_profile: userProfile,
+      user: user,
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
       user_name: req.session.user_name,

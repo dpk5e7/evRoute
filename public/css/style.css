@@ -12210,6 +12210,22 @@ textarea.form-control-lg {
   color: #01a3ff;
 }
 
+.saveAddress-title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: left;
+      -ms-flex-pack: left;
+          justify-content: left;
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(34, 34, 34);
+  font-size: 1rem;
+}
+
+.btnSaveAddress {
+  text-align: center;
+}
+
 /* Webpixels CSS */
 /* Utility and component-centric Design System based on Bootstrap for fast, responsive UI development */
 /* URL: https://github.com/webpixels/css */

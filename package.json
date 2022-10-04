@@ -23,5 +23,10 @@
     "mysql2": "^2.2.5",
     "node-fetch": "^3.2.10",
     "sequelize": "^6.3.5"
+  },
+  "devDependencies": {
+    "bundler": "^0.8.0",
+    "parcel": "^2.7.0",
+    "sass": "^1.55.0"
   }
 }
