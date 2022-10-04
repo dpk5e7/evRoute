@@ -138,8 +138,6 @@ async function getDirections(event) {
       },
     };
 
-    await printTextDirections(directions.routes[0]);
-
     // if the route already exists on the map, we'll reset it using setData
     if (map.getSource("route")) {
       map.getSource("route").setData(geojson);
@@ -209,6 +207,8 @@ async function getDirections(event) {
     }
     //console.log(`Stops: ${stops}`);
 
+    await printTextDirections(directions.routes[0], stopDistance, stops.length);
+
     // Set the marker for the start
     await setMarker(`<b>${start}</b>`, startCoordinates, "home");
 
@@ -248,7 +248,7 @@ async function getDirections(event) {
   }
 }
 
-async function printTextDirections(data) {
+async function printTextDirections(data, stopDistance, stops) {
   let tripInstructions = "";
   for (const step of data.legs[0].steps) {
     tripInstructions += `<li>${step.maneuver.instruction}</li>`;
@@ -257,7 +257,9 @@ async function printTextDirections(data) {
   const distance = data.distance / 1609; // Meters to miles
   instructions.innerHTML = `<p><strong>Trip Distance: ${distance.toFixed(
     0
-  )} miles</strong><br><strong>Trip Duration: ${duration}</strong></p><ol>${tripInstructions}</ol>`;
+  )} miles<br>Trip Duration: ${duration}<br>Recommended Stopping Distance: ${stopDistance.toFixed(
+    0
+  )} miles<br>Number of Stops: ${stops}</strong></p><ol>${tripInstructions}</ol>`;
 }
 
 // Modified from https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula

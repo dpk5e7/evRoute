@@ -12158,6 +12158,7 @@ textarea.form-control-lg {
   background-color: #e9ecef;
   height: 600px;
   overflow-y: scroll;
+  font-size: small;
 }
 
 .evlogo {
