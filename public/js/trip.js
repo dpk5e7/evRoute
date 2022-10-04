@@ -249,14 +249,15 @@ async function getDirections(event) {
 }
 
 async function printTextDirections(data) {
-  const steps = data.legs[0].steps;
-
   let tripInstructions = "";
-  for (const step of steps) {
+  for (const step of data.legs[0].steps) {
     tripInstructions += `<li>${step.maneuver.instruction}</li>`;
   }
   const duration = new Date(data.duration * 1000).toISOString().slice(11, 19);
-  instructions.innerHTML = `<p><strong>Trip duration: ${duration}</strong></p><ol>${tripInstructions}</ol>`;
+  const distance = data.distance / 1609; // Meters to miles
+  instructions.innerHTML = `<p><strong>Trip Distance: ${distance.toFixed(
+    0
+  )} miles</strong><br><strong>Trip Duration: ${duration}</strong></p><ol>${tripInstructions}</ol>`;
 }
 
 // Modified from https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
