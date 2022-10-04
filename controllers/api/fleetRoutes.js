@@ -5,7 +5,16 @@ const isAuthenticated = require("../../utils/auth");
 // Insert a new Fleet Item
 router.post("/", isAuthenticated, async (req, res) => {
   try {
-    // Do stuff here
+    const data = await Fleet.create({
+      electric_vehicle_id: req.body.electric_vehicle_id,
+      user_id: req.session.user_id,
+    });
+
+    if (!data) {
+      res.status(404).json(data);
+      return;
+    }
+
     res.status(200).json(data);
   } catch (err) {
     res.status(400).json(err);
