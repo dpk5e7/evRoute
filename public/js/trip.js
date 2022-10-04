@@ -5,17 +5,20 @@ const txtTitle = document.querySelector("#txtTitle");
 const txtStartAddress = document.querySelector("#txtStartAddress");
 const txtDestinationAddress = document.querySelector("#txtDestinationAddress");
 const ddlElectricVehicle = document.querySelector("#ddlElectricVehicle");
+const chkAggressive = document.querySelector("#chkAggressive");
 const directionsForm = document.querySelector("#directionsForm");
 const hdnUserID = document.querySelector("#hdnUserID");
 const hdnTripID = document.querySelector("#hdnTripID");
 const hdnSelectedEVID = document.querySelector("#hdnSelectedEVID");
+const hdnAggressive = document.querySelector("#hdnAggressive");
+const instructions = document.querySelector("#instructions");
 
 let map;
 let mapMarkers = [];
 
 // Event Listeners
 btnDirections.addEventListener("click", getDirections);
-btnClear.addEventListener("click", clearMarkers);
+btnClear.addEventListener("click", clickClearMarkers);
 directionsForm.addEventListener("submit", saveTrip);
 
 async function getStationData(lon, lat, radius, limit) {
@@ -123,6 +126,8 @@ async function getDirections(event) {
       destinationCoordinates
     );
 
+    //console.log(directions);
+
     const route = directions.routes[0].geometry.coordinates;
     const geojson = {
       type: "Feature",
@@ -132,6 +137,8 @@ async function getDirections(event) {
         coordinates: route,
       },
     };
+
+    await printTextDirections(directions.routes[0]);
 
     // if the route already exists on the map, we'll reset it using setData
     if (map.getSource("route")) {
@@ -163,53 +170,94 @@ async function getDirections(event) {
       padding: { top: 50, bottom: 50, left: 50, right: 50 },
     });
 
-    // Drop Charging stations near the start of the route
-    //setStationMarkersNearCoordinates(...startCoordinates, 10, 10);
-
-    // Find all the waypoints
-    let waypoints = [];
-    for (let step of directions.routes[0].legs[0].steps) {
-      const distance = await getDistanceAsCrowFlies(
-        startCoordinates,
-        step.geometry.coordinates[0]
-      );
-      if (distance > 20) {
-        let objWaypoint = {
-          longitude: step.geometry.coordinates[0][0],
-          latitude: step.geometry.coordinates[0][1],
-        };
-        waypoints.push(objWaypoint);
-      }
-    }
-
-    waypoints.reverse(); // start at the destination
-
-    // Use the waypoints to build a LINESTRING for NREL's nearby-route API
-    // LINESTRING(-74.0 40.7, -87.63 41.87, -104.98 39.76)
-    let lineString = "LINESTRING(";
-    for (wp of waypoints) {
-      lineString += `${wp.longitude} ${wp.latitude}, `;
-    }
-    lineString = lineString.slice(0, -2) + ")";
-
-    const response = await fetch(
-      `/api/nrel/stationsNearRoute?route=${lineString}`
-    );
-    const data = await response.json();
-
     // Remove all markers
     await clearMarkers();
 
-    // Set the markers for the fuel stations
-    await setStationMarkers(data.fuel_stations);
+    // get the range of the selected electric vehicle
+    const ev_range = await getEVRange();
 
-    // Set the markers for the start and destination
-    await setMarker(`<b>${start}</b>`, startCoordinates, "yellow-dot");
-    await setMarker(`<b>${destination}</b>`, destinationCoordinates, "red-dot");
+    // It's recommended that EVs operate with a battery between 80% and 20% full.
+    // Fast chargers won't fill the battery beyond 80% due to the heat created by fast charging.
+    const stopDistance = ev_range * 0.6; // Suggest a battery charge for 60% depletion of the battery.
+    //console.log("Stop Distance: " + stopDistance);
+
+    let waypoints = [];
+    const blnAggressive = chkAggressive.checked;
+
+    if (blnAggressive) {
+      for (let step of directions.routes[0].legs[0].steps) {
+        for (let coord of step.geometry.coordinates) {
+          waypoints.push(coord);
+        }
+      }
+    } else {
+      waypoints = route;
+    }
+
+    const stops = [];
+    let totalDistance = 0;
+    for (let i = 1; i < waypoints.length; i++) {
+      const distance = await getDistanceAsCrowFlies(
+        waypoints[i],
+        waypoints[i - 1]
+      );
+      totalDistance += distance;
+      if (totalDistance > stopDistance) {
+        stops.push(i - 1);
+        totalDistance = distance;
+      }
+    }
+    //console.log(`Stops: ${stops}`);
+
+    // Set the marker for the start
+    await setMarker(`<b>${start}</b>`, startCoordinates, "home");
+
+    for (let i = 0; i < stops.length; i++) {
+      // let travelDistance;
+      // if (i === 0) {
+      //   travelDistance = await getDistanceAsCrowFlies(
+      //     waypoints[stops[i]],
+      //     startCoordinates
+      //   );
+      // } else {
+      //   travelDistance = await getDistanceAsCrowFlies(
+      //     waypoints[stops[i]],
+      //     waypoints[stops[i - 1]]
+      //   );
+      // }
+      // console.log(
+      //   `Travelled: ${travelDistance}\nStopped at: ${waypoints[stops[i]]}`
+      // );
+      await setStationMarkersNearCoordinates(...waypoints[stops[i]], 25, 10);
+      await setMarker(
+        `<b>Stop #${i + 1}</b>`,
+        waypoints[stops[i]],
+        "mid-point"
+      );
+    }
 
     // Drop charging stations near the end of the route
-    //setStationMarkersNearCoordinates(...destinationCoordinates, 10, 10);
+    await setStationMarkersNearCoordinates(...destinationCoordinates, 5, 10);
+
+    // Set the markers for the destination
+    await setMarker(
+      `<b>${destination}</b>`,
+      destinationCoordinates,
+      "end-point"
+    );
   }
+}
+
+async function printTextDirections(data) {
+  let tripInstructions = "";
+  for (const step of data.legs[0].steps) {
+    tripInstructions += `<li>${step.maneuver.instruction}</li>`;
+  }
+  const duration = new Date(data.duration * 1000).toISOString().slice(11, 19);
+  const distance = data.distance / 1609; // Meters to miles
+  instructions.innerHTML = `<p><strong>Trip Distance: ${distance.toFixed(
+    0
+  )} miles</strong><br><strong>Trip Duration: ${duration}</strong></p><ol>${tripInstructions}</ol>`;
 }
 
 // Modified from https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
@@ -235,11 +283,33 @@ async function deg2rad(deg) {
 async function setStationMarkers(stationData) {
   // Add markers to the map.
   for (const station of stationData) {
-    setMarker(
-      `<b>${station.station_name}</b><br>${station.street_address}<br>${station.city}, ${station.state} ${station.zip}<br>EV Connector Types: ${station.ev_connector_types}`,
-      [station.longitude, station.latitude],
-      "blue"
-    );
+    let text = `<b>${station.station_name}</b><br>${station.street_address}<br>${station.city}, ${station.state} ${station.zip}`;
+
+    if (station.ev_level1_evse_num) {
+      text += `<br>Level 1 EVSE ports: ${station.ev_level1_evse_num}`;
+    }
+
+    if (station.ev_level2_evse_num) {
+      text += `<br>Level 2 EVSE ports: ${station.ev_level2_evse_num}`;
+    }
+
+    if (station.ev_dc_fast_num) {
+      text += `<br>DC Fast EVSE ports: ${station.ev_dc_fast_num}`;
+    }
+
+    if (station.ev_other_evse) {
+      text += `<br>Other EVSE ports: ${station.ev_other_evse}`;
+    }
+
+    if (station.ev_connector_types) {
+      text += `<br>EV Connector Types: ${station.ev_connector_types}`;
+    }
+
+    if (station.ev_pricing) {
+      text += `<br>EV Pricing: ${station.ev_pricing}`;
+    }
+
+    setMarker(text, [station.longitude, station.latitude], "blue");
   }
 }
 
@@ -257,11 +327,13 @@ async function setMarker(text, coordinates, image) {
   el.style.backgroundSize = "100%";
 
   // Add markers to the map.
-  const marker = new mapboxgl.Marker(el).setLngLat(coordinates).setPopup(
-    new mapboxgl.Popup({
-      closeButton: false,
-    }).setHTML(`<b>${text}</b>`)
-  );
+  const marker = new mapboxgl.Marker({ anchor: "bottom", element: el })
+    .setLngLat(coordinates)
+    .setPopup(
+      new mapboxgl.Popup({
+        closeButton: false,
+      }).setHTML(`<b>${text}</b>`)
+    );
 
   mapMarkers.push(marker);
   marker.addTo(map);
@@ -277,6 +349,26 @@ async function clearMarkers() {
   }
 }
 
+async function getEVRange() {
+  const electric_vehicle_id = ddlElectricVehicle.value;
+  try {
+    const response = await fetch(`/api/ev/${electric_vehicle_id}`);
+    const data = await response.json();
+    let range = 50;
+    if (data) {
+      return data.electric_range;
+    }
+    return range;
+  } catch (err) {
+    return 50;
+  }
+}
+
+async function clickClearMarkers(event) {
+  event.preventDefault();
+  await clearMarkers();
+}
+
 async function saveTrip(event) {
   event.preventDefault();
 
@@ -284,6 +376,7 @@ async function saveTrip(event) {
   const source_address = txtStartAddress.value.trim();
   const destination_address = txtDestinationAddress.value.trim();
   const electric_vehicle_id = ddlElectricVehicle.value;
+  const is_aggressive = chkAggressive.checked;
   const user_id = hdnUserID.value.trim();
 
   try {
@@ -298,6 +391,7 @@ async function saveTrip(event) {
         title,
         source_address,
         destination_address,
+        is_aggressive,
         user_id,
         electric_vehicle_id,
       };
@@ -311,7 +405,7 @@ async function saveTrip(event) {
         });
         const data = await response.json();
         if (response.ok) {
-          alert("Trip inserted successfully.");
+          alert("Trip saved successfully.");
           document.location.assign(`/trip/${data.id}`);
         } else {
           alert("Failed to insert trip.");
@@ -330,11 +424,6 @@ async function saveTrip(event) {
           alert("Failed to update trip.");
         }
       }
-
-      // I don't know why, but the function is returning after a successful fetch and not continuing with the lines below.
-      // console.log("Stormy Weather");
-      // console.log(response);
-      // console.log(data);
     }
   } catch (err) {
     console.log(err);
@@ -360,6 +449,7 @@ async function init() {
   // if we're pre-loading a trip, make sure the right vehicle is selected and click the directions button
   if (hdnTripID.value.trim() !== "") {
     ddlElectricVehicle.value = hdnSelectedEVID.value;
+    chkAggressive.checked = hdnAggressive.value === "true" ? 1 : 0;
     btnDirections.click();
   }
 }

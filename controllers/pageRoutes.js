@@ -64,6 +64,7 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
 
     res.render("dashboard", {
       logged_in: req.session.logged_in,
+      user_name: req.session.user_name,
       is_admin: req.session.is_admin,
       vehicles,
       trips,
@@ -115,6 +116,7 @@ router.get("/trip", isAuthenticated, async (req, res) => {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
       user_id: req.session.user_id,
+      user_name: req.session.user_name,
       userStartAddress,
       vehicles,
     });
@@ -157,8 +159,55 @@ router.get("/trip/:id", isAuthenticated, async (req, res) => {
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
       user_id: req.session.user_id,
+      user_name: req.session.user_name,
       vehicles,
       trip,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+router.get("/deleteTrip/:id", isAuthenticated, async (req, res) => {
+  try {
+    const data = await Trip.findByPk(req.params.id, {
+      include: [
+        {
+          model: ElectricVehicle,
+          attributes: ["model_year", "manufacturer_name", "model"],
+        },
+      ],
+    });
+    let trip = data.get({ plain: true });
+
+    res.render("deleteTrip", {
+      logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
+      trip,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+router.get("/deleteEVFromFleet/:id", isAuthenticated, async (req, res) => {
+  try {
+    const data = await ElectricVehicle.findOne({
+      where: {
+        id: req.params.id,
+      },
+      attributes: ["id", "model_year", "manufacturer_name", "model"],
+    });
+    let vehicle = data.get({ plain: true });
+
+    res.render("deleteEVFromFleet", {
+      logged_in: req.session.logged_in,
+      is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
+      vehicle,
     });
   } catch (err) {
     console.log(err);
@@ -173,12 +222,16 @@ router.get("/profile", isAuthenticated, async (req, res) => {
       where: { user_id: req.session.user_id },
     });
 
-    const userProfile = data.get({ plain: true });
+    let userProfile;
+    if (data) {
+      userProfile = data.get({ plain: true });
+    }
 
     res.render("profile", {
-      userProfile,
+      user_profile: userProfile,
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
     });
   } catch (err) {
     console.log(err);
@@ -202,6 +255,7 @@ router.get("/addEV", isAuthenticated, async (req, res) => {
       vehicles,
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
     });
   } catch (err) {
     console.log(err);
@@ -220,6 +274,7 @@ router.get("/changePassword", isAuthenticated, async (req, res) => {
       user,
       logged_in: req.session.logged_in,
       is_admin: req.session.is_admin,
+      user_name: req.session.user_name,
     });
   } catch (err) {
     console.log(err);

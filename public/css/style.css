@@ -5,7 +5,6 @@
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-@import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css");
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -12151,7 +12150,16 @@ textarea.form-control-lg {
   background-color: #dee2e6;
 }
 
-/* Background */
+#map {
+  height: 600px;
+}
+
+#instructions {
+  background-color: #e9ecef;
+  height: 600px;
+  overflow-y: scroll;
+}
+
 .evlogo {
   position: absolute;
   left: 0%;

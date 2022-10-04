@@ -1,17 +1,8 @@
 <h1>Add a address</h1>
 
-<form action="/", method="POST">
-    <input type="text" name="address" placeholder="save address">
-    <input type="text" name="street" placeholder="street">
-    <input type="text" name="city" placeholder="city">
-    <input type="number" name="zip" placeholder="zip code">
+<form id="saveAddress" action="/", method="POST">
+    <input id="txtAddress" type="text" placeholder="New Address" value="{{user_profile.address}}"> 
     <input type="submit" value="submit">
 </form>
 
-<h1>Saved Addresses</h1>
-<ul>
-    <li>{{address}}: {{street}}, {{city}} {{zip}}</li> 
-</ul>
-
-
-
+<script src="/js/profile.js"></script>

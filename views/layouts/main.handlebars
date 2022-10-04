@@ -21,8 +21,6 @@
   <body class="bg">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <div class="d-flex justify-content-end social_icon">
-      </div>
       <div class="container-fluid">
         <a class="navbar-brand text-bg-primary" href="/">
           <img src="/images/wordLogo.png" alt="evRoute" />
@@ -59,19 +57,20 @@
                 >Change Password</a></li>
               {{#if is_admin}}
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a
+                    class="nav-link dropdown-toggle active"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
                     Administration
                   </a>
                   <ul class="dropdown-menu bg">
                     <li>
-                      <a
-                        class="dropdown-item"
-                        href="/admin/users"
-                      >User Management</a></li>
-                      <li><a
-                        class="dropdown-item"
-                        href="/admin/ev"
-                      >EV Management</a></li>
+                      <a class="dropdown-item" href="/admin/users">User
+                        Management</a></li>
+                    <li><a class="dropdown-item" href="/admin/ev">EV Management</a></li>
                   </ul>
                 </li>
               {{/if}}
@@ -107,6 +106,5 @@
       <script src="/js/logout.js"></script>
     {{/if}}
     <script src="/js/bootstrap.bundle.min.js"></script>
-    
   </body>
 </html>
