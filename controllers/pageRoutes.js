@@ -191,7 +191,7 @@ router.get("/addEV", isAuthenticated, async (req, res) => {
   try { 
      const selectObj = await ElectricVehicle.findAll({
     attributes: ["model_year", "manufacturer_name", "model"]
-   });
+    });
     res.render("addEV", {
       selectObj,
       logged_in: req.session.logged_in,
