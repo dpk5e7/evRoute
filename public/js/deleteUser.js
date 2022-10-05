@@ -10,9 +10,9 @@ const formHandler = async (event) => {
     });
 
     if (response.ok) {
-      document.location.replace("/dashboard");
+      document.location.replace("/admin/users");
     } else {
-      alert("Failed to delete trip.");
+      alert("Failed to delete user.");
     }
   }
 };
