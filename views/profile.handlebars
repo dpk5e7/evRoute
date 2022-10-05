@@ -1,8 +1,47 @@
-<h1>Add a address</h1>
-
-<form id="saveAddress" action="/", method="POST">
-    <input id="txtAddress" type="text" placeholder="New Address" value="{{user_profile.address}}"> 
-    <input type="submit" value="submit">
-</form>
+<div class="vstack gap-3">
+  <form
+    id="saveAddress"
+    class="col-11 col-md-5 col-lg-4 col-xl-5 p-3 my-2 mx-auto"
+    action="/"
+    ,
+    method="POST"
+  >
+    <div class="card profile">
+      <div id="txtProfileName" class="card-header bg-primary text-bg-primary">
+        Change Default Address
+      </div>
+      <div class="p-3">
+        <div>Name:</div>
+        <h4 class="profileName">{{user.name}}</h4>
+      </div>
+      <div class="p-3">
+        <div>Email:</div>
+        <h4 class="profileEmail">{{user.email}}</h4>
+      </div>
+      <div class="p-3">
+        <div class="saveAddress-title">Address:</div>
+        <input
+          id="txtAddress"
+          class="form-control"
+          type="text"
+          placeholder="New Address"
+          value="{{user.user_profile.address}}"
+        />
+      </div>
+      <div class="p-3 mx-auto">
+        <input
+          id="btnSaveAddress"
+          class="btn btn-primary text-bg-primary mx-auto"
+          type="submit"
+          value="Submit"
+        />
+        <a
+          href="/changePassword"
+          class="btn btn-primary text-bg-primary mx-auto"
+        >Change Password</a>
+      </div>
+    </div>
+  </form>
+</div>
 
 <script src="/js/profile.js"></script>

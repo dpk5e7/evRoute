@@ -28,7 +28,7 @@
               class="form-check-input"
               type="checkbox"
               value=""
-              {{#if is_admin}}
+              {{#if user.is_admin}}
                 checked
               {{/if}}
               disabled
@@ -42,7 +42,7 @@
               class="form-check-input"
               type="checkbox"
               value=""
-              {{#if is_locked}}
+              {{#if user.is_locked}}
                 checked
               {{/if}}
               disabled
@@ -56,7 +56,7 @@
               class="form-check-input"
               type="checkbox"
               value=""
-              {{#if force_password_reset}}
+              {{#if user.force_password_reset}}
                 checked
               {{/if}}
               disabled

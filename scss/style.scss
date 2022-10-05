@@ -7,6 +7,7 @@ $primary: #0945a0;
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
+
 // Then add additional custom code here
 
 .bg {
@@ -17,12 +18,16 @@ $primary: #0945a0;
   height: 600px;
 }
 
+h4 .profileName{
+  font-weight: 400;
+}
+
 #instructions {
   background-color: $gray-200;
   height: 600px;
   overflow-y: scroll;
+  font-size: small;
 }
-
 
 .evlogo {
     position: absolute;
@@ -83,6 +88,20 @@ $primary: #0945a0;
 
   color: #01a3ff;
 }
+
+
+svg {
+  margin: .25rem;
+}
+
+// profile html
+
+// .row{
+//   display: flex;
+//   justify-content: left;
+//   width: 50%;
+// }
+
 
 // .form-control {
 //    margin: 12; 

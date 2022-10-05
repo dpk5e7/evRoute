@@ -12157,10 +12157,15 @@ textarea.form-control-lg {
   height: 600px;
 }
 
+h4 .profileName, .h4 .profileName {
+  font-weight: 400;
+}
+
 #instructions {
   background-color: #e9ecef;
   height: 600px;
   overflow-y: scroll;
+  font-size: small;
 }
 
 .evlogo {
@@ -12211,6 +12216,10 @@ textarea.form-control-lg {
   line-height: 18px;
   letter-spacing: 0.16em;
   color: #01a3ff;
+}
+
+svg {
+  margin: 0.25rem;
 }
 
 /* Webpixels CSS */
