@@ -12154,6 +12154,10 @@ textarea.form-control-lg {
   height: 600px;
 }
 
+h4 .profileName, .h4 .profileName {
+  font-weight: 400;
+}
+
 #instructions {
   background-color: #e9ecef;
   height: 600px;
@@ -12211,31 +12215,8 @@ textarea.form-control-lg {
   color: #01a3ff;
 }
 
-.saveAddress-title {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: left;
-      -ms-flex-pack: left;
-          justify-content: left;
-  font-family: Arial, Helvetica, sans-serif;
-  color: rgb(34, 34, 34);
-  font-size: 1rem;
-}
-
-.btnSaveAddress {
-  text-align: center;
-  font-size: 1rem;
-}
-
-.profileName {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-}
-
-.profileEmail {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
+svg {
+  margin: 0.25rem;
 }
 
 /* Webpixels CSS */
