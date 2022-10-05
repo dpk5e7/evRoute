@@ -26,7 +26,7 @@ async function init() {
 let scrollerID;
 let paused = true;
 let speed = 1; // 1 - Fast | 2 - Medium | 3 - Slow
-let interval = speed * 5;
+let interval = speed * 2;
 
 function startScroll() {
   let id = setInterval(function () {
