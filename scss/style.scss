@@ -18,13 +18,16 @@ $primary: #0945a0;
   height: 600px;
 }
 
+h4 .profileName{
+  font-weight: 400;
+}
+
 #instructions {
   background-color: $gray-200;
   height: 600px;
   overflow-y: scroll;
   font-size: small;
 }
-
 
 .evlogo {
     position: absolute;
@@ -86,6 +89,11 @@ $primary: #0945a0;
   color: #01a3ff;
 }
 
+
+svg {
+  margin: .25rem;
+}
+
 // profile html
 
 // .row{
@@ -94,29 +102,6 @@ $primary: #0945a0;
 //   width: 50%;
 // }
 
-
-.saveAddress-title{
-  display: flex;
-  justify-content: left;
-  font-family: Arial, Helvetica, sans-serif;
-  color: rgb(34, 34, 34);
-  font-size: 1rem;
-}
-
-.btnSaveAddress{
-  text-align: center;
-  font-size: 1rem;
-}
-
-.profileName{
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-}
-
-.profileEmail{
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-}
 
 // .form-control {
 //    margin: 12; 

@@ -1,22 +1,22 @@
 <div class="vstack gap-3">
   <form
     id="saveAddress"
-    class="col-11 col-md-5 col-lg-4 col-xl-3 p-3 my-2 mx-auto"
+    class="col-11 col-md-5 col-lg-4 col-xl-5 p-3 my-2 mx-auto"
     action="/"
     ,
     method="POST"
   >
-    <div class="card">
+    <div class="card profile">
       <div id="txtProfileName" class="card-header bg-primary text-bg-primary">
         Change Default Address
       </div>
       <div class="p-3">
         <div>Name:</div>
-        <h3 class="profileName">{{user.name}}</h3>
+        <h4 class="profileName">{{user.name}}</h4>
       </div>
       <div class="p-3">
         <div>Email:</div>
-        <h2 class="profileEmail">{{user.email}}</h2>
+        <h4 class="profileEmail">{{user.email}}</h4>
       </div>
       <div class="p-3">
         <div class="saveAddress-title">Address:</div>
