@@ -125,11 +125,13 @@ AND I want to ensure correct syntax with ESLint
 
 ### Static Screenshots
 
-TBD
+![Screenshot1](./assets/screenshot1.jpg)
 
-### Video Preview
+![Screenshot2](./assets/screenshot2.jpg)
 
-TBD
+![Screenshot3](./assets/screenshot3.jpg)
+
+![Screenshot4](./assets/screenshot4.jpg)
 
 ## Technologies
 
